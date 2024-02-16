@@ -1,10 +1,13 @@
 package com.example.drawingapp
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,6 +24,9 @@ class DrawingPageFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private lateinit var drawingView: DrawingView
+    private val viewModel: DrawingViewModel by activityViewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -34,7 +40,38 @@ class DrawingPageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_drawing_page, container, false)
+        val view = inflater.inflate(R.layout.fragment_drawing_page, container, false)
+        drawingView = view.findViewById(R.id.drawing_view)
+
+        // Default values for the drawing view
+        drawingView.setPenColor(Color.BLACK)
+        drawingView.setPenSize(5.0f)
+
+        // Set up drawing view touch listener
+        drawingView.setOnTouchListener { _, event ->
+            handleTouchEvent(event)
+        }
+
+        // Observe changes in the viewmodel and pass to the drawing view
+        // TODO: Requires changes to viewmodel
+
+        return view
+    }
+
+    // Handle touch events for drawing
+    private fun handleTouchEvent(event: MotionEvent): Boolean {
+        when (event.action) {
+            MotionEvent.ACTION_DOWN -> {
+                drawingView.startTouch(event.x, event.y)
+            }
+            MotionEvent.ACTION_MOVE -> {
+                drawingView.continueTouch(event.x, event.y)
+            }
+            MotionEvent.ACTION_UP -> {
+                drawingView.stopTouch()
+            }
+        }
+        return true
     }
 
     companion object {
