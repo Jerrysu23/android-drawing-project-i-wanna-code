@@ -2,6 +2,7 @@ package com.example.drawingapp
 
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -20,14 +21,6 @@ class DrawingViewModel : ViewModel() {
     val penSize = MutableLiveData<Float>()
 
     init {
-        // Initialize the bitmap list with a basic bitmap
-        _bitmapList.value = mutableListOf(
-            Bitmap.createBitmap(800, 800, Bitmap.Config.ARGB_8888)
-        )
-
-        // Select this first drawing (later will be selected on splash screen probably)
-        _currentDrawing.value = 0
-
         // Default values for pen color and size
         penColor.value = Color.BLACK
         penSize.value = 5.0f
@@ -62,5 +55,10 @@ class DrawingViewModel : ViewModel() {
             if (id >= 0 && id < it.count())
                 it.removeAt(id)
         }
+    }
+
+    // Update the current bitmap
+    fun updateCurrentBitmap(bitmap: Bitmap) {
+        _bitmapList.value?.set(_currentDrawing.value!!, bitmap)
     }
 }

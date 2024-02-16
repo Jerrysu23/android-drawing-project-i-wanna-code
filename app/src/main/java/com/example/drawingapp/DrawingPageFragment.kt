@@ -1,6 +1,7 @@
 package com.example.drawingapp
 
 import android.annotation.SuppressLint
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -82,7 +83,10 @@ class DrawingPageFragment : Fragment() {
 
     // Reset the DrawingView's bitmap
     private fun resetBitmap() {
-        drawingView.setBitmap(viewModel.getCurrentBitmap())
+        drawingView.setBitmap(viewModel.getCurrentBitmap()) {
+            // Update the ViewModel when something is drawn
+            viewModel.updateCurrentBitmap(it ?: Bitmap.createBitmap(800, 800, Bitmap.Config.ARGB_8888))
+        }
     }
 
     companion object {
