@@ -1,5 +1,6 @@
 package com.example.drawingapp
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,6 +9,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -35,6 +37,7 @@ class DrawingPageFragment : Fragment() {
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility") // The app cannot really support this accessibility feature
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,12 +51,15 @@ class DrawingPageFragment : Fragment() {
         drawingView.setPenSize(5.0f)
 
         // Set up drawing view touch listener
-        drawingView.setOnTouchListener { _, event ->
-            handleTouchEvent(event)
-        }
+        drawingView.setOnTouchListener { _, event -> handleTouchEvent(event) }
 
-        // Observe changes in the viewmodel and pass to the drawing view
-        // TODO: Requires changes to viewmodel
+        // Observe changes in the ViewModel and pass to the drawing view
+        viewModel.penColor.observe(viewLifecycleOwner, Observer { drawingView.setPenColor(it) })
+        viewModel.penSize.observe(viewLifecycleOwner, Observer { drawingView.setPenSize(it) })
+        viewModel.currentDrawing.observe(viewLifecycleOwner, Observer { resetBitmap() })
+
+        // Set the DrawingView's bitmap
+        resetBitmap()
 
         return view
     }
@@ -72,6 +78,11 @@ class DrawingPageFragment : Fragment() {
             }
         }
         return true
+    }
+
+    // Reset the DrawingView's bitmap
+    private fun resetBitmap() {
+        drawingView.setBitmap(viewModel.getCurrentBitmap())
     }
 
     companion object {

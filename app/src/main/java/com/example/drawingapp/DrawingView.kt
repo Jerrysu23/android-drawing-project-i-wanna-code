@@ -16,28 +16,31 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) 
     private lateinit var canvas: Canvas
     private val paint = Paint()
     private var path = Path()
+    private var active: Boolean = false // True if the bitmap matches the canvas's bitmap, allows us to draw
 
     init {
-        // TODO: Temporary initialization values, we will use the view model later
-        bitmap = Bitmap.createBitmap(800, 800, Bitmap.Config.ARGB_8888)
-        canvas = Canvas(bitmap)
+        // Temporary bitmap
+        setBitmap(null)
 
         // Set up the paint
         paint.style = Paint.Style.STROKE
     }
 
     fun startTouch(x: Float, y: Float) {
+        if (!active) return
         path.reset()
         path.moveTo(x, y)
         invalidate()
     }
 
     fun continueTouch(x: Float, y: Float) {
+        if (!active) return
         path.lineTo(x, y)
         invalidate()
     }
 
     fun stopTouch() {
+        if (!active) return
         // Put the path onto the actual bitmap
         canvas.drawPath(path, paint)
         path.reset()
@@ -49,6 +52,15 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) 
 
     fun setPenSize(size: Float) {
         paint.strokeWidth = size
+    }
+
+    // Sets the bitmap
+    fun setBitmap(newBitmap: Bitmap?) {
+        active = newBitmap != null
+
+        bitmap = newBitmap ?: Bitmap.createBitmap(800, 800, Bitmap.Config.ARGB_8888)
+        canvas = Canvas(bitmap)
+        invalidate()
     }
 
     override fun onDraw(canvas: Canvas) {
