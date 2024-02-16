@@ -67,13 +67,20 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) 
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        // Draw everything onto the bitmap, clipping the pen stroke to the bounds
         bitmap.let { it ->
+            // Draw the bitmap and current pen stroke on the screen, scaling everything to fit
             canvas.apply {
+                // Save the canvas before we change it for drawing
                 save()
+
+                // Ensure the path isn't drawn outside the bounds of the bitmap
                 clipRect(0, 0, it.width, it.height)
+
+                // Draw the canvas
                 drawBitmap(it, 0f, 0f, paint)
                 drawPath(path, paint)
+
+                // Restore the old canvas
                 restore()
             }
         }
