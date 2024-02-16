@@ -65,6 +65,16 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) 
         invalidate()
     }
 
+    // Set the view size to the bitmap size
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+
+        // Measure the bitmap size and set it as the measured dimensions
+        val width = bitmap.width
+        val height = bitmap.height
+        setMeasuredDimension(width, height)
+    }
+
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         bitmap.let { it ->
