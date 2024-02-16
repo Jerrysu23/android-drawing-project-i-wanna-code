@@ -23,7 +23,7 @@ class MainPageFragment : Fragment() {
         // Inflate the layout for this fragment
         val binding = FragmentMainPageBinding.inflate(layoutInflater, container, false)
         binding.newDrawingButton.setOnClickListener{
-            myViewModel.newItem(Bitmap.createBitmap(800, 800, Bitmap.Config.ARGB_8888), Paint(), pensize = 5)
+            myViewModel.addBitmap()
             findNavController().navigate(R.id.makeNewDrawing)
         }
         return binding.root
