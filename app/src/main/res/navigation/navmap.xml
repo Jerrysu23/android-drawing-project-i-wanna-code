@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navmap"
+    app:startDestination="@id/mainPageFragment">
+
+    <fragment
+        android:id="@+id/mainPageFragment"
+        android:name="com.example.drawingapp.MainPageFragment"
+        android:label="fragment_main_page"
+        tools:layout="@layout/fragment_main_page" >
+        <action
+            android:id="@+id/makeNewDrawing"
+            app:destination="@id/drawingPageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/drawingPageFragment"
+        android:name="com.example.drawingapp.DrawingPageFragment"
+        android:label="DrawingPageFragment" />
+</navigation>

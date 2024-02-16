@@ -7,12 +7,10 @@
     android:orientation="horizontal"
     tools:context=".MainActivity">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragmentContainerView"
-        android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <Button
+        android:id="@+id/newDrawingButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
-        app:defaultNavHost="true"
-        app:navGraph="@navigation/navmap" />
+        android:text="New Drawing" />
 </LinearLayout>
