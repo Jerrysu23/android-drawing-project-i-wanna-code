@@ -6,21 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-<!--    From an external library for initial navigation -->
-<!--    <com.github.gcacace.signaturepad.views.SignaturePad-->
-<!--        xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--        xmlns:app="http://schemas.android.com/apk/res-auto"-->
-<!--        android:id="@+id/signature_pad"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:layout_above="@+id/toolbarHolder"-->
-<!--        app:penColor="@android:color/black"-->
-<!--        />-->
-
-    <com.example.drawingapp.DrawingView
-        android:id="@+id/drawing_view"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:background="#dddddd"
+        tools:context=".MainActivity">
+
+        <com.example.drawingapp.DrawingView
+            android:id="@+id/drawing_view"
+            android:background="#ffffff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/toolbarHolder"
