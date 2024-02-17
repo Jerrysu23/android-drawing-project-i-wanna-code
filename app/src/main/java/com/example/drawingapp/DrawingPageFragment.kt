@@ -9,8 +9,12 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SeekBar
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+
+import com.example.drawingapp.databinding.FragmentDrawingPageBinding
+import com.example.drawingapp.databinding.FragmentMainPageBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -43,6 +47,7 @@ class DrawingPageFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val binding = FragmentDrawingPageBinding.inflate(layoutInflater, container, false)
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_drawing_page, container, false)
         drawingView = view.findViewById(R.id.drawing_view)
@@ -50,10 +55,23 @@ class DrawingPageFragment : Fragment() {
         // Default values for the drawing view
         drawingView.setPenColor(Color.BLACK)
         drawingView.setPenSize(5.0f)
+        val penSizeEditor = binding.penSize
+        penSizeEditor.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                drawingView.setPenSize(progress.toFloat())
+                binding.penSizeText.text = progress.toString()
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+            }
+
+        })
 
         // Set up drawing view touch listener
         drawingView.setOnTouchListener { _, event -> handleTouchEvent(event) }
-
         // Observe changes in the ViewModel and pass to the drawing view
         viewModel.penColor.observe(viewLifecycleOwner, Observer { drawingView.setPenColor(it) })
         viewModel.penSize.observe(viewLifecycleOwner, Observer { drawingView.setPenSize(it) })

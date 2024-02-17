@@ -12,5 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="New Drawing" />
+        android:backgroundTint="#9E3F3F"
+        android:text="New Drawing"
+        android:visibility="visible" />
 </LinearLayout>
