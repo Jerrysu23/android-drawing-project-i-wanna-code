@@ -23,19 +23,19 @@ class DrawingViewModel : ViewModel() {
 
     init {
         // Add 1 empty bitmap by default
-        _bitmapList.value = mutableListOf(Bitmap.createBitmap(800, 800, Bitmap.Config.ARGB_8888))
-        _currentDrawing.value = 0
+        _bitmapList.postValue(mutableListOf(Bitmap.createBitmap(800, 800, Bitmap.Config.ARGB_8888)))
+        _currentDrawing.postValue(0)
 
         // Default values for pen color and size
-        penColor.value = Color.BLACK
-        penSize.value = 5.0f
+        penColor.postValue(Color.BLACK)
+        penSize.postValue(5.0f)
     }
 
     // Select a drawing if possible
     fun selectDrawing(id: Int) {
         _bitmapList.value?.let {
             if (id >= 0 && id < it.count()) {
-                _currentDrawing.value = id
+                _currentDrawing.postValue(id)
             }
         }
     }
@@ -54,9 +54,9 @@ class DrawingViewModel : ViewModel() {
         if (_bitmapList.value != null)
             _bitmapList.value!!.add(Bitmap.createBitmap(800, 800, Bitmap.Config.ARGB_8888))
         else
-            _bitmapList.value = mutableListOf(Bitmap.createBitmap(800, 800, Bitmap.Config.ARGB_8888))
+            _bitmapList.postValue(mutableListOf(Bitmap.createBitmap(800, 800, Bitmap.Config.ARGB_8888)))
 
-        _currentDrawing.value = _bitmapList.value!!.count() - 1
+        _currentDrawing.postValue(_bitmapList.value!!.count() - 1)
     }
 
     // Remove a bitmap
@@ -64,8 +64,9 @@ class DrawingViewModel : ViewModel() {
         _bitmapList.value?.let {
             if (id >= 0 && id < it.count())
                 it.removeAt(id)
-            _currentDrawing.value = (_currentDrawing.value!! - 1) ?: 0
-            _currentDrawing.value = max(_currentDrawing.value!!, 0)
+
+            val tempIndex = (_currentDrawing.value!! - 1) ?: 0
+            _currentDrawing.postValue(max(tempIndex, 0))
         }
     }
 

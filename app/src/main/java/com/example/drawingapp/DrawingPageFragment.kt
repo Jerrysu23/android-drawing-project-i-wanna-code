@@ -82,7 +82,7 @@ class DrawingPageFragment : Fragment() {
 
                 // Callback for picked color (required)
                 .onColorSelected { color: Int ->
-                    drawingView.setPenColor(color)
+                    viewModel.penColor.postValue(color)
                 }
 
                 // Create dialog
@@ -90,12 +90,12 @@ class DrawingPageFragment : Fragment() {
             colorPicker.show(childFragmentManager, "color_picker")
         }
         binding.eraserButt.setOnClickListener{
-            drawingView.setPenColor(Color.WHITE)
+            viewModel.penColor.postValue(Color.WHITE)
         }
         val penSizeEditor = binding.penSize
         penSizeEditor.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                drawingView.setPenSize(progress.toFloat())
+                viewModel.penSize.postValue(progress.toFloat())
                 binding.penSizeText.text = progress.toString()
             }
 
