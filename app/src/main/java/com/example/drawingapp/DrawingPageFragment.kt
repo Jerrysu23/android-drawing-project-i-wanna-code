@@ -107,7 +107,7 @@ class DrawingPageFragment : Fragment() {
 
         })
         binding.homeButton.setOnClickListener{
-            findNavController().navigate(R.id.toStartScreen)
+            findNavController().popBackStack()
         }
 
         // Set up drawing view touch listener
