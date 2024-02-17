@@ -17,5 +17,10 @@
     <fragment
         android:id="@+id/drawingPageFragment"
         android:name="com.example.drawingapp.DrawingPageFragment"
-        android:label="DrawingPageFragment" />
+        android:label="DrawingPageFragment"
+        >
+        <action
+            android:id="@+id/toStartScreen"
+            app:destination="@id/mainPageFragment" />
+    </fragment>
 </navigation>

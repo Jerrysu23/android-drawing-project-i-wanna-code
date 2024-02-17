@@ -12,9 +12,9 @@ import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 
 import com.example.drawingapp.databinding.FragmentDrawingPageBinding
-import com.example.drawingapp.databinding.FragmentMainPageBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -50,7 +50,7 @@ class DrawingPageFragment : Fragment() {
         val binding = FragmentDrawingPageBinding.inflate(layoutInflater, container, false)
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_drawing_page, container, false)
-        drawingView = view.findViewById(R.id.drawing_view)
+        drawingView = binding.drawingView
 
         // Default values for the drawing view
         drawingView.setPenColor(Color.BLACK)
@@ -69,6 +69,9 @@ class DrawingPageFragment : Fragment() {
             }
 
         })
+        binding.homeButton.setOnClickListener{
+            findNavController().navigate(R.id.toStartScreen)
+        }
 
         // Set up drawing view touch listener
         drawingView.setOnTouchListener { _, event -> handleTouchEvent(event) }
@@ -80,7 +83,7 @@ class DrawingPageFragment : Fragment() {
         // Set the DrawingView's bitmap
         resetBitmap()
 
-        return view
+        return binding.root
     }
 
     // Handle touch events for drawing
