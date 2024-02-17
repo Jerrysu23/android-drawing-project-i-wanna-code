@@ -65,8 +65,10 @@ class DrawingViewModel : ViewModel() {
             if (id >= 0 && id < it.count())
                 it.removeAt(id)
 
-            val tempIndex = (_currentDrawing.value!! - 1) ?: 0
-            _currentDrawing.postValue(max(tempIndex, 0))
+            if (_currentDrawing.value!! >= id) {
+                val tempIndex = (_currentDrawing.value!! - 1) ?: 0
+                _currentDrawing.postValue(max(tempIndex, 0))
+            }
         }
     }
 
