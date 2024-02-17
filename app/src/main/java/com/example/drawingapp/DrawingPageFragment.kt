@@ -15,6 +15,8 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 
 import com.example.drawingapp.databinding.FragmentDrawingPageBinding
+import vadiole.colorpicker.ColorModel
+import vadiole.colorpicker.ColorPickerDialog
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -43,6 +45,10 @@ class DrawingPageFragment : Fragment() {
     }
 
     @SuppressLint("ClickableViewAccessibility") // The app cannot really support this accessibility feature
+    override fun onResume() {
+        super.onResume()
+        resetBitmap()
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -55,6 +61,37 @@ class DrawingPageFragment : Fragment() {
         // Default values for the drawing view
         drawingView.setPenColor(Color.BLACK)
         drawingView.setPenSize(5.0f)
+
+        binding.colorButt.setOnClickListener{
+            val colorPicker: ColorPickerDialog = ColorPickerDialog.Builder()
+
+                // Set initial (default) color
+                .setInitialColor(Color.BLACK)
+
+                // Set Color Model, can be ARGB, RGB, AHSV or HSV
+                .setColorModel(ColorModel.RGB)
+
+                // Set is user be able to switch color model
+                .setColorModelSwitchEnabled(true)
+
+                // Set your localized string resource for OK button
+                .setButtonOkText(android.R.string.ok)
+
+                // Set your localized string resource for Cancel button
+                .setButtonCancelText(android.R.string.cancel)
+
+                // Callback for picked color (required)
+                .onColorSelected { color: Int ->
+                    drawingView.setPenColor(color)
+                }
+
+                // Create dialog
+                .create()
+            colorPicker.show(childFragmentManager, "color_picker")
+        }
+        binding.eraserButt.setOnClickListener{
+            drawingView.setPenColor(Color.WHITE)
+        }
         val penSizeEditor = binding.penSize
         penSizeEditor.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {

@@ -54,5 +54,6 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.6")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.6")
+    implementation("io.github.vadiole:colorpicker:1.0.4")
     implementation("androidx.core:core-splashscreen:1.0.0")
 }
