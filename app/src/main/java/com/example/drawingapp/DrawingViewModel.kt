@@ -67,7 +67,7 @@ class DrawingViewModel : ViewModel() {
 
             if (_currentDrawing.value!! >= id) {
                 val tempIndex = (_currentDrawing.value!! - 1) ?: 0
-                _currentDrawing.postValue(max(tempIndex, 0))
+                _currentDrawing.postValue(if (tempIndex >= 0) tempIndex else null)
             }
         }
     }

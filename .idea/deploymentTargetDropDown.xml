@@ -27,6 +27,12 @@
           <timeTargetWasSelectedWithDropDown value="2024-02-17T01:19:46.738877800Z" />
         </State>
       </entry>
+      <entry key="testBitmapUpdates()">
+        <State />
+      </entry>
+      <entry key="testObserveBitmapUpdates()">
+        <State />
+      </entry>
     </value>
   </component>
 </project>
