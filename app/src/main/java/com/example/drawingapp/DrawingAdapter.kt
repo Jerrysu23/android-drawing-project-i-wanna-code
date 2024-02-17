@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-class DrawingAdapter(private var bitmaps: MutableList<Bitmap>, private val onItemClick: (Bitmap) -> Unit) : RecyclerView.Adapter<DrawingViewHolder>() {
+class DrawingAdapter(private var bitmaps: List<Bitmap>, private val onItemClick: (Int) -> Unit) : RecyclerView.Adapter<DrawingViewHolder>() {
     // Adaptively set the drawings
     fun setBitmaps(newBitmaps: MutableList<Bitmap>) {
         bitmaps = newBitmaps
@@ -22,7 +22,7 @@ class DrawingAdapter(private var bitmaps: MutableList<Bitmap>, private val onIte
     override fun onBindViewHolder(holder: DrawingViewHolder, position: Int) {
         val bitmap = bitmaps[position]
         holder.bind(bitmap, position + 1)
-        holder.itemView.setOnClickListener{ onItemClick(bitmap) }
+        holder.itemView.setOnClickListener{ onItemClick(position) }
     }
 
     override fun getItemCount(): Int = bitmaps.size

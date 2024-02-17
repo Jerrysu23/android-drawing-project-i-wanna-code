@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import kotlin.math.max
 
 class DrawingViewModel : ViewModel() {
     // The current drawings
@@ -21,6 +22,10 @@ class DrawingViewModel : ViewModel() {
     val penSize = MutableLiveData<Float>()
 
     init {
+        // Add 1 empty bitmap by default
+        _bitmapList.value = mutableListOf(Bitmap.createBitmap(800, 800, Bitmap.Config.ARGB_8888))
+        _currentDrawing.value = 0
+
         // Default values for pen color and size
         penColor.value = Color.BLACK
         penSize.value = 5.0f
@@ -46,7 +51,12 @@ class DrawingViewModel : ViewModel() {
 
     // Add a bitmap
     fun addBitmap() {
-        _bitmapList.value?.add(Bitmap.createBitmap(800, 800, Bitmap.Config.ARGB_8888))
+        if (_bitmapList.value != null)
+            _bitmapList.value!!.add(Bitmap.createBitmap(800, 800, Bitmap.Config.ARGB_8888))
+        else
+            _bitmapList.value = mutableListOf(Bitmap.createBitmap(800, 800, Bitmap.Config.ARGB_8888))
+
+        _currentDrawing.value = _bitmapList.value!!.count() - 1
     }
 
     // Remove a bitmap
@@ -54,6 +64,8 @@ class DrawingViewModel : ViewModel() {
         _bitmapList.value?.let {
             if (id >= 0 && id < it.count())
                 it.removeAt(id)
+            _currentDrawing.value = (_currentDrawing.value!! - 1) ?: 0
+            _currentDrawing.value = max(_currentDrawing.value!!, 0)
         }
     }
 
