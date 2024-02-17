@@ -7,11 +7,10 @@
 
     <ImageView
         android:id="@+id/image_drawing_preview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_weight="0"
-        android:background="#FFFFFF"
-        android:src="@tools:sample/avatars" />
+        android:background="#FFFFFF" />
 
     <TextView
         android:id="@+id/text_drawing_name"
