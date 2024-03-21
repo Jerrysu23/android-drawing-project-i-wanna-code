@@ -39,12 +39,12 @@ fun DrawingList(bitmaps: List<Bitmap>, onItemClick: (Int) -> Unit) {
             ) {
                 Image(
                     bitmap.asImageBitmap(),
-                    "Drawing $index",
+                    "Drawing ${index + 1}",
                     modifier = Modifier
                         .size(100.dp)
                         .border(BorderStroke(1.dp, Color.Black))
                 )
-                Text("Drawing $index", textAlign = TextAlign.Center, modifier = Modifier
+                Text("Drawing ${index + 1}", textAlign = TextAlign.Center, modifier = Modifier
                     .weight(1f)
                     .align(Alignment.CenterVertically)
                 )
