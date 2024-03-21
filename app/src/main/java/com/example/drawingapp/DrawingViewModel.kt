@@ -22,10 +22,6 @@ class DrawingViewModel : ViewModel() {
     val penSize = MutableLiveData<Float>()
 
     init {
-        // Add 1 empty bitmap by default
-        _bitmapList.postValue(mutableListOf(Bitmap.createBitmap(800, 800, Bitmap.Config.ARGB_8888)))
-        _currentDrawing.postValue(0)
-
         // Default values for pen color and size
         penColor.postValue(Color.BLACK)
         penSize.postValue(5.0f)
@@ -51,12 +47,14 @@ class DrawingViewModel : ViewModel() {
 
     // Add a bitmap
     fun addBitmap() {
-        if (_bitmapList.value != null)
+        val lastCount: Int = _bitmapList.value?.size ?: 0
+
+        if (_bitmapList.value != null && _bitmapList.value!!.isNotEmpty())
             _bitmapList.value!!.add(Bitmap.createBitmap(800, 800, Bitmap.Config.ARGB_8888))
         else
             _bitmapList.postValue(mutableListOf(Bitmap.createBitmap(800, 800, Bitmap.Config.ARGB_8888)))
 
-        _currentDrawing.postValue(_bitmapList.value!!.count() - 1)
+        _currentDrawing.postValue(lastCount)
     }
 
     // Remove a bitmap
