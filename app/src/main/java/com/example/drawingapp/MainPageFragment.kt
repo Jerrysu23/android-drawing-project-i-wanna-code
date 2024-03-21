@@ -36,11 +36,7 @@ class MainPageFragment : Fragment() {
 
     @Composable
     fun MainPageContent() {
-        Column (
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-        ) {
+        Column {
             Button(
                 onClick = {
                     viewModel.addBitmap()
