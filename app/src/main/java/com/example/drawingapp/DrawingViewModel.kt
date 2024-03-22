@@ -6,9 +6,21 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import java.lang.IllegalArgumentException
 import kotlin.math.max
 
-class DrawingViewModel : ViewModel() {
+class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() {
+    val drawings = repository.allDrawings
+    fun getCurrentDrawing(Id: Int){
+        repository.getCurrentDrawing(Id)
+    }
+    fun addDrawing(){
+        repository.addDrawing()
+    }
+    fun updateDrawing(bitmap: Bitmap, Id: Int){
+        repository.updateCurrentDrawing(bitmap, Id)
+    }
     // The current drawings
     private val _bitmapList = MutableLiveData<MutableList<Bitmap>>()
     val bitmapList: LiveData<MutableList<Bitmap>> get() = _bitmapList
@@ -73,5 +85,14 @@ class DrawingViewModel : ViewModel() {
     // Update the current bitmap
     fun updateCurrentBitmap(bitmap: Bitmap) {
         _bitmapList.value?.set(_currentDrawing.value!!, bitmap)
+    }
+    class DrawingViewModelFactory(private val repository: DrawingRepository) : ViewModelProvider.Factory{
+        override fun <T : ViewModel> create(modelClass: Class<T>) : T{
+            if(modelClass.isAssignableFrom(DrawingViewModel::class.java)){
+                @Suppress("UNCHECKED_CAST")
+                return DrawingViewModel(repository) as T
+            }
+            throw IllegalArgumentException("Unknown ViewModel Class")
+        }
     }
 }
