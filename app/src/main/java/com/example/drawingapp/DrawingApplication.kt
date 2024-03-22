@@ -10,5 +10,5 @@ class DrawingApplication : Application(){
         DrawingDatabase::class.java,
         "drawing_database"
     ).build()}
-    val drawingRepository by lazy {DrawingRepository(scope, db.drawingDao())}
+    val drawingRepository by lazy {DrawingRepository(scope, db.drawingDao(), applicationContext)}
 }

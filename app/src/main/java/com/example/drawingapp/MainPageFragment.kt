@@ -46,17 +46,9 @@ class MainPageFragment : Fragment() {
         Column {
             Button(
                 onClick = {
-                    lifecycleScope.launch{
                         viewModel.addDrawing()
-                        val dir = File(context?.filesDir.toString() + "/" + viewModel.dbCurrentDrawing + ".png")
-                        Log.i("context?.filesDir.toString() + viewModel.dbCurrentDrawing", "file path is: " + context?.filesDir.toString() + viewModel.dbCurrentDrawing)
-                        val fOut = FileOutputStream(dir)
-                        val bmp = Bitmap.createBitmap(800, 800, Bitmap.Config.ARGB_8888)
-                        bmp.compress(Bitmap.CompressFormat.PNG, 85, fOut)
-                        fOut.flush()
-                        fOut.close()
                         findNavController().navigate(R.id.makeNewDrawing)
-                }},
+                },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("New Drawing")
@@ -64,10 +56,10 @@ class MainPageFragment : Fragment() {
             val list by viewModel.drawings.collectAsState(listOf())
             DrawingList(list, context) { id ->
                 Log.i("id", "id is: $id")
-                lifecycleScope.launch {
-                    viewModel.getCurrentDrawing(id)
+
+                    viewModel.getCurrentDrawing(id.toLong())
                     findNavController().navigate(R.id.makeNewDrawing)
-                }
+
 
             }
         }

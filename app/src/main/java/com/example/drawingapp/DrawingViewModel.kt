@@ -16,14 +16,23 @@ import java.lang.IllegalArgumentException
 import kotlin.math.max
 
 class DrawingViewModel(private val repository: DrawingRepository): ViewModel() {
-    val drawings = repository.allDrawings
-    var dbCurrentDrawing: Long = 0
-    fun getCurrentDrawing(Id: Int) {
+    val drawings = repository.allDrawings()
+    var dbCurrentId: Long = 0
+    var dbCurrentDrawing: Bitmap = Bitmap.createBitmap(800, 800, Bitmap.Config.ARGB_8888)
+    fun getCurrentDrawing(Id: Long) {
+
         dbCurrentDrawing = repository.getCurrentDrawing(Id)
+        dbCurrentId = Id
+    }
+    fun updateDrawing(Id: Long){
+        repository.updateDrawing(repository.getCurrentDrawing(Id), Id)
     }
 
-    suspend fun addDrawing() {
-        dbCurrentDrawing = repository.addDrawing()
+    fun addDrawing() {
+        var Id = repository.addDrawing()
+        dbCurrentDrawing = repository.getCurrentDrawing(Id)
+        dbCurrentId = Id
+
         Log.i("drawing id", "Drawing id is: $dbCurrentDrawing")
     }
 

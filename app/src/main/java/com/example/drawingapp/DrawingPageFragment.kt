@@ -121,7 +121,7 @@ class DrawingPageFragment : Fragment() {
         viewModel.penColor.observe(viewLifecycleOwner, Observer { drawingView.setPenColor(it) })
         viewModel.penSize.observe(viewLifecycleOwner, Observer { drawingView.setPenSize(it) })
         viewModel.currentDrawing.observe(viewLifecycleOwner, Observer { resetBitmap() })
-
+        viewModel.getCurrentDrawing(viewModel.dbCurrentId)
         // Set the DrawingView's bitmap
         resetBitmap()
 
@@ -146,11 +146,9 @@ class DrawingPageFragment : Fragment() {
 
     // Reset the DrawingView's bitmap
     private fun resetBitmap() {
-        sleep(2000)
-        val bitmap : Bitmap = BitmapFactory.decodeFile(context?.filesDir.toString() + "/" + viewModel.dbCurrentDrawing.toString() + ".png")
-        drawingView.setBitmap(bitmap) {
+        drawingView.setBitmap(viewModel.dbCurrentDrawing) {
             // Update the ViewModel when something is drawn
-            viewModel.updateCurrentBitmap(it ?: Bitmap.createBitmap(800, 800, Bitmap.Config.ARGB_8888))
+            viewModel.updateDrawing(viewModel.dbCurrentId)
         }
     }
 

@@ -30,20 +30,20 @@ import java.nio.file.Files
 import java.io.File
 
 @Composable
-fun DrawingList(bitmaps: List<Long>, context: Context?, onItemClick: (Int) -> Unit) {
+fun DrawingList(bitmaps: List<Bitmap>, context: Context?, onItemClick: (Int) -> Unit) {
     Column (
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        bitmaps.forEachIndexed { index, Id ->
+        bitmaps.forEachIndexed { index, bitmap ->
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp)
                     .clickable { onItemClick(index) }
             ) {
-                var bitmap : Bitmap = BitmapFactory.decodeFile(context?.filesDir.toString() + "/" + Id.toString() + ".png")
+
                 Image(
                     bitmap.asImageBitmap(),
                     "Drawing ${index + 1}",

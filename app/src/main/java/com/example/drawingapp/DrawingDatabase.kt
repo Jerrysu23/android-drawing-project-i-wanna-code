@@ -42,6 +42,6 @@ interface DrawingDAO{
     fun allDrawings() : Flow<List<Long>>
 
     @Query("SELECT id from drawing where id = :id")
-    fun getCurrentDrawing(id: Int) : Long
+    suspend fun getCurrentDrawing(id: Long) : Long
 
 }
