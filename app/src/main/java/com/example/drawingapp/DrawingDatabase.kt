@@ -10,7 +10,6 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import kotlinx.coroutines.flow.Flow
 
-@TypeConverters(Converters::class)
 @Database(entities=[Drawing::class], version=1, exportSchema = false)
 abstract class DrawingDatabase : RoomDatabase() {
     abstract fun drawingDao() : DrawingDAO
@@ -37,14 +36,12 @@ abstract class DrawingDatabase : RoomDatabase() {
 @Dao
 interface DrawingDAO{
     @Insert
-    suspend fun addDrawing(data : Drawing)
+    suspend fun addDrawing(data : Drawing) : Long
 
-    @Query("SELECT bitmap from drawing")
-    fun allDrawings() : Flow<List<Bitmap>>
+    @Query("SELECT id from drawing")
+    fun allDrawings() : Flow<List<Long>>
 
-    @Query("SELECT * from drawing where id = :id")
-    fun getCurrentDrawing(id: Int) : Drawing
+    @Query("SELECT id from drawing where id = :id")
+    fun getCurrentDrawing(id: Int) : Long
 
-    @Query("UPDATE drawing SET bitmap = :bitmap WHERE id=:id")
-    fun updateBitmap(bitmap : Bitmap, id : Int)
 }

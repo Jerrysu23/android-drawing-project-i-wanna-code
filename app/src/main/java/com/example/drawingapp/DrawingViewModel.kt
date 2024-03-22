@@ -1,5 +1,6 @@
 package com.example.drawingapp
 
+import android.content.pm.ApplicationInfo
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.util.Log
@@ -7,20 +8,27 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileOutputStream
 import java.lang.IllegalArgumentException
 import kotlin.math.max
 
-class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() {
+class DrawingViewModel(private val repository: DrawingRepository): ViewModel() {
     val drawings = repository.allDrawings
-    fun getCurrentDrawing(Id: Int){
-        repository.getCurrentDrawing(Id)
+    var dbCurrentDrawing: Long = 0
+    fun getCurrentDrawing(Id: Int) {
+        dbCurrentDrawing = repository.getCurrentDrawing(Id)
     }
-    fun addDrawing(){
-        repository.addDrawing()
+
+    suspend fun addDrawing() {
+        dbCurrentDrawing = repository.addDrawing()
+        Log.i("drawing id", "Drawing id is: $dbCurrentDrawing")
     }
-    fun updateDrawing(bitmap: Bitmap, Id: Int){
-        repository.updateCurrentDrawing(bitmap, Id)
-    }
+
+
+
     // The current drawings
     private val _bitmapList = MutableLiveData<MutableList<Bitmap>>()
     val bitmapList: LiveData<MutableList<Bitmap>> get() = _bitmapList
@@ -86,13 +94,14 @@ class DrawingViewModel(private val repository: DrawingRepository) : ViewModel() 
     fun updateCurrentBitmap(bitmap: Bitmap) {
         _bitmapList.value?.set(_currentDrawing.value!!, bitmap)
     }
-    class DrawingViewModelFactory(private val repository: DrawingRepository) : ViewModelProvider.Factory{
-        override fun <T : ViewModel> create(modelClass: Class<T>) : T{
-            if(modelClass.isAssignableFrom(DrawingViewModel::class.java)){
-                @Suppress("UNCHECKED_CAST")
-                return DrawingViewModel(repository) as T
-            }
-            throw IllegalArgumentException("Unknown ViewModel Class")
+
+}
+class DrawingViewModelFactory(private val repository: DrawingRepository) : ViewModelProvider.Factory{
+    override fun <T : ViewModel> create(modelClass: Class<T>) : T{
+        if(modelClass.isAssignableFrom(DrawingViewModel::class.java)){
+            @Suppress("UNCHECKED_CAST")
+            return DrawingViewModel(repository) as T
         }
+        throw IllegalArgumentException("Unknown ViewModel Class")
     }
 }

@@ -1,9 +1,12 @@
 package com.example.drawingapp
 
 import android.annotation.SuppressLint
+import android.content.pm.ApplicationInfo
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Bundle
+import android.os.SystemClock.sleep
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -34,7 +37,9 @@ class DrawingPageFragment : Fragment() {
     private var param2: String? = null
 
     private lateinit var drawingView: DrawingView
-    private val viewModel: DrawingViewModel by activityViewModels()
+    private val viewModel : DrawingViewModel by activityViewModels(){
+        DrawingViewModelFactory((activity?.application as DrawingApplication).drawingRepository)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -141,7 +146,9 @@ class DrawingPageFragment : Fragment() {
 
     // Reset the DrawingView's bitmap
     private fun resetBitmap() {
-        drawingView.setBitmap(viewModel.getCurrentBitmap()) {
+        sleep(2000)
+        val bitmap : Bitmap = BitmapFactory.decodeFile(context?.filesDir.toString() + "/" + viewModel.dbCurrentDrawing.toString() + ".png")
+        drawingView.setBitmap(bitmap) {
             // Update the ViewModel when something is drawn
             viewModel.updateCurrentBitmap(it ?: Bitmap.createBitmap(800, 800, Bitmap.Config.ARGB_8888))
         }

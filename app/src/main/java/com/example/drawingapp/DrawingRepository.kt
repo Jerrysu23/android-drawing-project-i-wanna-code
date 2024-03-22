@@ -6,16 +6,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 class DrawingRepository(private val scope : CoroutineScope, private val dao: DrawingDAO) {
     val allDrawings = dao.allDrawings()
-    fun addDrawing(){
-        scope.launch {
-            dao.addDrawing(Drawing(Bitmap.createBitmap(800, 800, Bitmap.Config.ARGB_8888)))
-        }
+    suspend fun addDrawing(): Long {
+        return dao.addDrawing(Drawing())
 
     }
-    fun getCurrentDrawing(Id : Int): Drawing {
+    fun getCurrentDrawing(Id : Int): Long {
         return dao.getCurrentDrawing(Id)
-    }
-    fun updateCurrentDrawing(bitmap: Bitmap, Id: Int){
-        dao.updateBitmap(bitmap, Id)
     }
 }
