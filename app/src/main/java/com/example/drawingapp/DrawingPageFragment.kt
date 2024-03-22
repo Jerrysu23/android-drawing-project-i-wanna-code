@@ -120,7 +120,6 @@ class DrawingPageFragment : Fragment() {
         // Observe changes in the ViewModel and pass to the drawing view
         viewModel.penColor.observe(viewLifecycleOwner, Observer { drawingView.setPenColor(it) })
         viewModel.penSize.observe(viewLifecycleOwner, Observer { drawingView.setPenSize(it) })
-        viewModel.currentDrawing.observe(viewLifecycleOwner, Observer { resetBitmap() })
         viewModel.getCurrentDrawing(viewModel.dbCurrentId)
         // Set the DrawingView's bitmap
         resetBitmap()
