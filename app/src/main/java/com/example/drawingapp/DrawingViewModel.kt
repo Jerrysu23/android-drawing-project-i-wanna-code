@@ -24,8 +24,8 @@ class DrawingViewModel(private val repository: DrawingRepository): ViewModel() {
         dbCurrentDrawing = repository.getCurrentDrawing(Id)
         dbCurrentId = Id
     }
-    fun updateDrawing(Id: Long){
-        repository.updateDrawing(repository.getCurrentDrawing(Id), Id)
+    fun updateDrawing(bitmap: Bitmap, Id: Long){
+        repository.updateDrawing(bitmap, Id)
     }
 
     fun addDrawing() {

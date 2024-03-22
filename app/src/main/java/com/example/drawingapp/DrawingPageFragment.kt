@@ -148,7 +148,7 @@ class DrawingPageFragment : Fragment() {
     private fun resetBitmap() {
         drawingView.setBitmap(viewModel.dbCurrentDrawing) {
             // Update the ViewModel when something is drawn
-            viewModel.updateDrawing(viewModel.dbCurrentId)
+            it?.let{ viewModel.updateDrawing(it, viewModel.dbCurrentId) }
         }
     }
 
