@@ -17,7 +17,7 @@ class DrawingRepository(private val scope : CoroutineScope, private val dao: Dra
        var bitmaps: Flow<List<Bitmap>> = dao.allDrawings().map {
            var bitmapList : ArrayList<Bitmap> = ArrayList()
            for(x in it){
-               var bitmap = BitmapFactory.decodeFile(context?.filesDir.toString() + "/" + x + ".png").copy(Bitmap.Config.ARGB_8888, true)
+               var bitmap = BitmapFactory.decodeFile(context?.filesDir.toString() + "/" + (x-1) + ".png").copy(Bitmap.Config.ARGB_8888, true)
                Log.i("drawing", "$bitmap")
                bitmapList.add(bitmap)
            }
@@ -29,13 +29,14 @@ class DrawingRepository(private val scope : CoroutineScope, private val dao: Dra
     fun addDrawing() : Long = runBlocking {
 
             val id = dao.addDrawing(Drawing())
-            val dir = File(context.filesDir.toString() + "/" + id + ".png")
+            Log.i("addDrawing", "$id path: ${context.filesDir.toString() + "/" + (id-1) + ".png"}")
+            val dir = File(context.filesDir.toString() + "/" + (id-1) + ".png")
             val fOut = FileOutputStream(dir)
             val bmp = Bitmap.createBitmap(800, 800, Bitmap.Config.ARGB_8888)
             bmp.compress(Bitmap.CompressFormat.PNG, 85, fOut)
             fOut.flush()
             fOut.close()
-        id
+        id-1
 
 
 
@@ -51,7 +52,7 @@ class DrawingRepository(private val scope : CoroutineScope, private val dao: Dra
 
     }
      fun getCurrentDrawing(Id: Long): Bitmap = runBlocking{
-
+        Log.i("getDrawing", "${dao.getCurrentDrawing(Id)} ")
          BitmapFactory.decodeFile(context?.filesDir.toString() + "/" + dao.getCurrentDrawing(Id) + ".png").copy(Bitmap.Config.ARGB_8888, true)
     }
 }
