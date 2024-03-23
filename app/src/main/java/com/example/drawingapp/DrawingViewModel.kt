@@ -41,10 +41,7 @@ class DrawingViewModel(private val repository: DrawingRepository): ViewModel() {
 
 
     // The current drawing
-
      lateinit var  brushShape : Paint.Cap
-
- 
 
 
     // The color and size of the pen
@@ -55,8 +52,8 @@ class DrawingViewModel(private val repository: DrawingRepository): ViewModel() {
 
     init {
         // Default values for pen color and size
-        penColor.postValue(Color.BLACK)
         penShape.postValue(Paint.Cap.ROUND)
+        penColor.postValue(Color.BLACK)
         penSize.postValue(5.0f)
     }
 
