@@ -1,41 +1,41 @@
 package com.example.drawingapp
 
-import android.content.pm.ApplicationInfo
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
-import java.io.File
-import java.io.FileOutputStream
 import java.lang.IllegalArgumentException
-import kotlin.math.max
 
 
 class DrawingViewModel(private val repository: DrawingRepository): ViewModel() {
     val drawings = repository.allDrawings()
     var dbCurrentId: Long = 0
     var dbCurrentDrawing: Bitmap = Bitmap.createBitmap(800, 800, Bitmap.Config.ARGB_8888)
-    fun getCurrentDrawing(Id: Long) {
 
-        dbCurrentDrawing = repository.getCurrentDrawing(Id)
-        dbCurrentId = Id
+    fun getDrawingById(id: Long) : Bitmap {
+        dbCurrentDrawing = repository.getCurrentDrawing(id)
+        dbCurrentId = id
+        return dbCurrentDrawing
     }
-    fun updateDrawing(bitmap: Bitmap, Id: Long){
+    fun getCurrentDrawing() : Bitmap {
+        dbCurrentDrawing = repository.getCurrentDrawing(dbCurrentId)
+        return dbCurrentDrawing
+    }
+
+    fun updateDrawing(bitmap: Bitmap, Id: Long) {
         repository.updateDrawing(bitmap, Id)
     }
 
-    fun addDrawing() {
-        var Id = repository.addDrawing()
-        dbCurrentDrawing = repository.getCurrentDrawing(Id)
-        dbCurrentId = Id
+    fun addDrawing() : Long {
+        val id = repository.addDrawing()
+        dbCurrentDrawing = repository.getCurrentDrawing(id)
+        dbCurrentId = id
 
         Log.i("drawing id", "Drawing id is: $dbCurrentDrawing")
+        return id
     }
 
 

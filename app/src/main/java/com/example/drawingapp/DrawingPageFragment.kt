@@ -1,13 +1,9 @@
 package com.example.drawingapp
 
 import android.annotation.SuppressLint
-import android.content.pm.ApplicationInfo
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
-import android.os.SystemClock.sleep
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -128,7 +124,7 @@ class DrawingPageFragment : Fragment() {
         viewModel.penColor.observe(viewLifecycleOwner, Observer { drawingView.setPenColor(it) })
         viewModel.penSize.observe(viewLifecycleOwner, Observer { drawingView.setPenSize(it) })
 
-        viewModel.getCurrentDrawing(viewModel.dbCurrentId)
+        viewModel.getDrawingById(viewModel.dbCurrentId)
 
         viewModel.penShape.observe(viewLifecycleOwner, Observer { drawingView.setPenShape(it) })
 
