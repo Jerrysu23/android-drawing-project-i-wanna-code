@@ -1,6 +1,10 @@
 package com.example.drawingapp
 
+import android.app.Application
+import android.content.Context
+import android.content.pm.ApplicationInfo
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -22,9 +26,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import java.nio.file.Files
+import java.io.File
 
 @Composable
-fun DrawingList(bitmaps: List<Bitmap>, onItemClick: (Int) -> Unit) {
+fun DrawingList(bitmaps: List<Bitmap>, context: Context?, onItemClick: (Int) -> Unit) {
     Column (
         modifier = Modifier
             .fillMaxSize()
@@ -37,6 +43,7 @@ fun DrawingList(bitmaps: List<Bitmap>, onItemClick: (Int) -> Unit) {
                     .padding(8.dp)
                     .clickable { onItemClick(index) }
             ) {
+
                 Image(
                     bitmap.asImageBitmap(),
                     "Drawing ${index + 1}",

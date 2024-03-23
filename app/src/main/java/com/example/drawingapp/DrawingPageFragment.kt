@@ -1,10 +1,13 @@
 package com.example.drawingapp
 
 import android.annotation.SuppressLint
+import android.content.pm.ApplicationInfo
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
+import android.os.SystemClock.sleep
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -35,7 +38,9 @@ class DrawingPageFragment : Fragment() {
     private var param2: String? = null
 
     private lateinit var drawingView: DrawingView
-    private val viewModel: DrawingViewModel by activityViewModels()
+    private val viewModel : DrawingViewModel by activityViewModels(){
+        DrawingViewModelFactory((activity?.application as DrawingApplication).drawingRepository)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -122,7 +127,9 @@ class DrawingPageFragment : Fragment() {
         // Observe changes in the ViewModel and pass to the drawing view
         viewModel.penColor.observe(viewLifecycleOwner, Observer { drawingView.setPenColor(it) })
         viewModel.penSize.observe(viewLifecycleOwner, Observer { drawingView.setPenSize(it) })
-        viewModel.currentDrawing.observe(viewLifecycleOwner, Observer { resetBitmap() })
+
+        viewModel.getCurrentDrawing(viewModel.dbCurrentId)
+
         viewModel.penShape.observe(viewLifecycleOwner, Observer { drawingView.setPenShape(it) })
 
 
@@ -150,9 +157,9 @@ class DrawingPageFragment : Fragment() {
 
     // Reset the DrawingView's bitmap
     private fun resetBitmap() {
-        drawingView.setBitmap(viewModel.getCurrentBitmap()) {
+        drawingView.setBitmap(viewModel.dbCurrentDrawing) {
             // Update the ViewModel when something is drawn
-            viewModel.updateCurrentBitmap(it ?: Bitmap.createBitmap(800, 800, Bitmap.Config.ARGB_8888))
+            it?.let{ viewModel.updateDrawing(it, viewModel.dbCurrentId) }
         }
     }
 
