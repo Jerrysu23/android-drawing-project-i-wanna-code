@@ -139,22 +139,21 @@ class ViewModelTests {
                 val firstId = vm.addDrawing()
 
                 // Add a red pixel to the top left and update it
-                vm.getCurrentDrawing().let{
-                    it[0, 0] = Color.RED
-                    Log.d("TestDrawing 1a", "${checkImageEmpty(it)}")
-                    vm.updateDrawing(it, firstId)
-                }
+                val firstBitmap = Bitmap.createBitmap(800, 800, Bitmap.Config.ARGB_8888)
+                firstBitmap[0, 0] = Color.RED
+                Log.d("TestDrawing 1a", "${checkImageEmpty(firstBitmap)}")
+                vm.updateDrawing(firstBitmap, firstId)
 
                 // Add another drawing
                 val secondId = vm.addDrawing()
 
-                // Add a blue pixel to the top right and update it
-                vm.getCurrentDrawing().let{
-                    it[0, 0] = Color.BLUE
-                    Log.d("TestDrawing 2a", "${checkImageEmpty(it)}")
-                    vm.updateDrawing(it, secondId)
-                }
+                // Add a blue pixel to the top left and update it
+                val secondBitmap = Bitmap.createBitmap(800, 800, Bitmap.Config.ARGB_8888)
+                secondBitmap[0, 0] = Color.BLUE
+                Log.d("TestDrawing 2a", "${checkImageEmpty(secondBitmap)}")
+                vm.updateDrawing(secondBitmap, firstId)
 
+                Log.d("TestDrawing 2b", "${checkImageEmpty(vm.getCurrentDrawing())}")
                 Log.d("TestDrawing 1b", "${checkImageEmpty(vm.getDrawingById(firstId))}")
                 Log.d("TestDrawing 2b", "${checkImageEmpty(vm.getDrawingById(secondId))}")
 
