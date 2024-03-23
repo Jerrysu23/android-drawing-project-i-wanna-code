@@ -7,13 +7,16 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.Rect
+import android.graphics.drawable.shapes.Shape
 import android.util.AttributeSet
 import android.view.View
+import androidx.compose.foundation.shape.CircleShape
 
 typealias BitmapCallback = (bitmap: Bitmap?) -> Unit
 
 class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
+    private var curr_shape = Paint.Cap.ROUND;
     private lateinit var bitmap: Bitmap
     private lateinit var canvas: Canvas
     private val paint = Paint()
@@ -31,6 +34,18 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) 
     }
 
     fun startTouch(x: Float, y: Float) {
+
+//        if(curr_shape == DrawingViewModel.BrushShape.CIRCLE){
+//            path.reset()
+//            path.moveTo(x, y)
+//
+//        }
+//        else if(curr_shape == DrawingViewModel.BrushShape.SQUARE){
+//            val translation = DrawingViewModel. / 2
+//            path.reset()
+//            path.addRect(x - translation, y - translation,
+//                x + translation, y + translation, Path.Direction.CW)
+//        }
         path.reset()
         path.moveTo(x, y)
         invalidate()
@@ -57,6 +72,14 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) 
         paint.strokeWidth = size
     }
 
+    fun setPenShape(brushShape: Paint.Cap){
+
+        paint.strokeCap = brushShape;
+
+    }
+
+
+
     // Sets the bitmap
     fun setBitmap(newBitmap: Bitmap?, callback: BitmapCallback?) {
         updateViewModelCallback = callback
@@ -64,6 +87,8 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) 
         canvas = Canvas(bitmap)
         invalidate()
     }
+
+
 
     // Set the view size to the bitmap size
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -88,7 +113,11 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) 
 
                 // Draw the canvas
                 drawBitmap(it, 0f, 0f, paint)
+
+                //canvas?.drawCircle(x, y, 10f, paint)
                 drawPath(path, paint)
+
+
 
                 // Restore the old canvas
                 restore()

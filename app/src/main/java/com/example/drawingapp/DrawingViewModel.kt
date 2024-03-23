@@ -3,6 +3,7 @@ package com.example.drawingapp
 import android.content.pm.ApplicationInfo
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.Paint
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,6 +15,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.lang.IllegalArgumentException
 import kotlin.math.max
+
 
 class DrawingViewModel(private val repository: DrawingRepository): ViewModel() {
     val drawings = repository.allDrawings()
@@ -40,10 +42,16 @@ class DrawingViewModel(private val repository: DrawingRepository): ViewModel() {
 
     // The current drawing
 
+     lateinit var  BrushShape : Paint.Cap
+
+ 
+
 
     // The color and size of the pen
     val penColor = MutableLiveData<Int>()
     val penSize = MutableLiveData<Float>()
+    val penShape = MutableLiveData<Paint.Cap>()
+
 
     init {
         // Default values for pen color and size

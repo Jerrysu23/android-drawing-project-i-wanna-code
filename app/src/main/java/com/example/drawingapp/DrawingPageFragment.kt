@@ -5,6 +5,7 @@ import android.content.pm.ApplicationInfo
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.graphics.Paint
 import android.os.Bundle
 import android.os.SystemClock.sleep
 import androidx.fragment.app.Fragment
@@ -97,6 +98,12 @@ class DrawingPageFragment : Fragment() {
         binding.eraserButt.setOnClickListener{
             viewModel.penColor.postValue(Color.WHITE)
         }
+        binding.squareShapeButt.setOnClickListener{
+            viewModel.penShape.postValue(Paint.Cap.SQUARE)
+        }
+        binding.penShapeButt.setOnClickListener{
+            viewModel.penShape.postValue(Paint.Cap.ROUND)
+        }
         val penSizeEditor = binding.penSize
         penSizeEditor.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
@@ -120,7 +127,12 @@ class DrawingPageFragment : Fragment() {
         // Observe changes in the ViewModel and pass to the drawing view
         viewModel.penColor.observe(viewLifecycleOwner, Observer { drawingView.setPenColor(it) })
         viewModel.penSize.observe(viewLifecycleOwner, Observer { drawingView.setPenSize(it) })
+
         viewModel.getCurrentDrawing(viewModel.dbCurrentId)
+
+        viewModel.penShape.observe(viewLifecycleOwner, Observer { drawingView.setPenShape(it) })
+
+
         // Set the DrawingView's bitmap
         resetBitmap()
 
