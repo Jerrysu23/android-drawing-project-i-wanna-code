@@ -2,6 +2,7 @@ package com.example.drawingapp
 
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.Paint
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,6 +10,9 @@ import androidx.lifecycle.ViewModel
 import kotlin.math.max
 
 class DrawingViewModel : ViewModel() {
+
+     lateinit var  BrushShape : Paint.Cap
+
     // The current drawings
     private val _bitmapList = MutableLiveData<MutableList<Bitmap>>()
     val bitmapList: LiveData<MutableList<Bitmap>> get() = _bitmapList
@@ -20,6 +24,8 @@ class DrawingViewModel : ViewModel() {
     // The color and size of the pen
     val penColor = MutableLiveData<Int>()
     val penSize = MutableLiveData<Float>()
+    val penShape = MutableLiveData<Paint.Cap>()
+
 
     init {
         // Default values for pen color and size
