@@ -94,12 +94,13 @@ class DrawingPageFragment : Fragment() {
         binding.eraserButt.setOnClickListener{
             viewModel.penColor.postValue(Color.WHITE)
         }
-        binding.squareShapeButt.setOnClickListener{
-            viewModel.penShape.postValue(Paint.Cap.SQUARE)
-        }
         binding.penShapeButt.setOnClickListener{
             viewModel.penShape.postValue(Paint.Cap.ROUND)
         }
+        binding.squareShapeButt.setOnClickListener{
+            viewModel.penShape.postValue(Paint.Cap.SQUARE)
+        }
+
         val penSizeEditor = binding.penSize
         penSizeEditor.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
@@ -123,10 +124,8 @@ class DrawingPageFragment : Fragment() {
         // Observe changes in the ViewModel and pass to the drawing view
         viewModel.penColor.observe(viewLifecycleOwner, Observer { drawingView.setPenColor(it) })
         viewModel.penSize.observe(viewLifecycleOwner, Observer { drawingView.setPenSize(it) })
-
-        viewModel.getDrawingById(viewModel.dbCurrentId)
-
         viewModel.penShape.observe(viewLifecycleOwner, Observer { drawingView.setPenShape(it) })
+        viewModel.getDrawingById(viewModel.dbCurrentId)
 
 
         // Set the DrawingView's bitmap
