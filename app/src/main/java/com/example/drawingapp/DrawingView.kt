@@ -16,7 +16,7 @@ typealias BitmapCallback = (bitmap: Bitmap?) -> Unit
 
 class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
-    private var curr_shape = Paint.Cap.ROUND;
+    //private var curr_shape = Paint.Cap.ROUND;
     private lateinit var bitmap: Bitmap
     private lateinit var canvas: Canvas
     private val paint = Paint()
