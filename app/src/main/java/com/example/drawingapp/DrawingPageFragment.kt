@@ -3,6 +3,7 @@ package com.example.drawingapp
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.Paint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -92,6 +93,12 @@ class DrawingPageFragment : Fragment() {
         binding.eraserButt.setOnClickListener{
             viewModel.penColor.postValue(Color.WHITE)
         }
+        binding.squareShapeButt.setOnClickListener{
+            viewModel.penShape.postValue(Paint.Cap.SQUARE)
+        }
+        binding.penShapeButt.setOnClickListener{
+            viewModel.penShape.postValue(Paint.Cap.ROUND)
+        }
         val penSizeEditor = binding.penSize
         penSizeEditor.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
@@ -116,6 +123,8 @@ class DrawingPageFragment : Fragment() {
         viewModel.penColor.observe(viewLifecycleOwner, Observer { drawingView.setPenColor(it) })
         viewModel.penSize.observe(viewLifecycleOwner, Observer { drawingView.setPenSize(it) })
         viewModel.currentDrawing.observe(viewLifecycleOwner, Observer { resetBitmap() })
+        viewModel.penShape.observe(viewLifecycleOwner, Observer { drawingView.setPenShape(it) })
+
 
         // Set the DrawingView's bitmap
         resetBitmap()
