@@ -17,7 +17,7 @@ class DrawingRepository(private val scope : CoroutineScope, private val dao: Dra
        var bitmaps: Flow<List<Bitmap>> = dao.allDrawings().map {
            var bitmapList : ArrayList<Bitmap> = ArrayList()
            for(x in it){
-               var bitmap = BitmapFactory.decodeFile(context?.filesDir.toString() + "/" + (x-1) + ".png").copy(Bitmap.Config.ARGB_8888, true)
+               var bitmap = BitmapFactory.decodeFile(context?.filesDir.toString() + "/" + (x-1) + ".png")
                Log.i("drawing", "$bitmap")
                bitmapList.add(bitmap)
            }
