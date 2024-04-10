@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:409594998791:android:a96b3221d34498711f7aa2",
         "android_client_info": {
-          "package_name": "com.iwannacode.drawingapp"
+          "package_name": "com.example.drawingapp"
         }
       },
       "oauth_client": [],
