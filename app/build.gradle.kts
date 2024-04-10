@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.serialization") version "1.9.22"
     id("com.google.devtools.ksp")
+    id("com.google.gms.google-services") // Firebase
 }
 
 android {
@@ -75,4 +76,6 @@ dependencies {
     ksp("androidx.room:room-compiler:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
     implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.8")
+    implementation(platform("com.google.firebase:firebase-bom:32.8.0")) // Firebase
+    implementation("com.google.firebase:firebase-analytics") // for Firebase packages. we'll probably need more
 }
