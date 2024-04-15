@@ -51,7 +51,7 @@ class DrawingViewModel(private val repository: DrawingRepository): ViewModel() {
 
 
     init {
-        // Default values for pen color and size
+        // Default values for pen color and size and shape
         penShape.postValue(Paint.Cap.ROUND)
         penColor.postValue(Color.BLACK)
         penSize.postValue(5.0f)

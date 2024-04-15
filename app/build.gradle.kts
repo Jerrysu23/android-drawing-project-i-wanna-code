@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.serialization") version "1.9.22"
     id("com.google.devtools.ksp")
+    id("com.google.gms.google-services") // Firebase
 }
 
 android {
@@ -57,6 +58,8 @@ dependencies {
     implementation("androidx.compose.ui:ui-android:1.6.4")
     implementation("androidx.compose.foundation:foundation-android:1.6.4")
     implementation("androidx.compose.material:material-android:1.6.4")
+    implementation("androidx.test:core-ktx:1.5.0")
+    implementation("androidx.test.ext:junit-ktx:1.1.5")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -73,4 +76,6 @@ dependencies {
     ksp("androidx.room:room-compiler:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
     implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.8")
+    implementation(platform("com.google.firebase:firebase-bom:32.8.0")) // Firebase
+    implementation("com.google.firebase:firebase-analytics") // for Firebase packages. we'll probably need more
 }

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "409594998791",
+    "project_id": "cs4530-drawing-app",
+    "storage_bucket": "cs4530-drawing-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:409594998791:android:a96b3221d34498711f7aa2",
+        "android_client_info": {
+          "package_name": "com.example.drawingapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnBZxBJZWdh3VB7WQ7p-WYmXVNe_jbyTw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
