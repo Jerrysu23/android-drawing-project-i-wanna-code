@@ -6,17 +6,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Button
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 
 class MainPageFragment : Fragment() {
     private val viewModel : DrawingViewModel by activityViewModels(){
@@ -38,6 +44,18 @@ class MainPageFragment : Fragment() {
     @Composable
     fun MainPageContent() {
         Column {
+            var text by remember { mutableStateOf("") }
+            Row(modifier = Modifier.fillMaxWidth()){
+                TextField(
+                    modifier = Modifier.weight(1f),
+                    value = text,
+                    onValueChange = {
+                        text = it
+                    },
+                    label = {Text("File Name")}
+                )
+            }
+
             Button(
                 onClick = {
                         viewModel.addDrawing()
