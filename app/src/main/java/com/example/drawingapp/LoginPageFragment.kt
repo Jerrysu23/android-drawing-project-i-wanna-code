@@ -45,6 +45,7 @@ class LoginPageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         auth = Firebase.auth
+
         return ComposeView(requireContext()).apply {
             setContent {
                 LoginPageContent()

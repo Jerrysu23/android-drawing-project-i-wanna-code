@@ -55,4 +55,7 @@ class DrawingRepository(private val scope : CoroutineScope, private val dao: Dra
          Log.i("filename:", "filename is " + dao.getCurrentDrawing(id))
          BitmapFactory.decodeFile(context?.filesDir.toString() + "/" + dao.getCurrentDrawing(id+1) + ".png").copy(Bitmap.Config.ARGB_8888, true)
     }
+    fun getCurrentFileName(id: Long): String = runBlocking{
+        dao.getCurrentDrawing(id + 1)
+    }
 }

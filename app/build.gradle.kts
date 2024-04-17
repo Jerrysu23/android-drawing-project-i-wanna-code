@@ -61,6 +61,7 @@ dependencies {
     implementation("androidx.test:core-ktx:1.5.0")
     implementation("androidx.test.ext:junit-ktx:1.1.5")
     implementation("com.google.firebase:firebase-auth:22.3.1")
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -80,4 +81,6 @@ dependencies {
     implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.8")
     implementation(platform("com.google.firebase:firebase-bom:32.8.0")) // Firebase
     implementation("com.google.firebase:firebase-analytics") // for Firebase packages. we'll probably need more
+    implementation("com.google.firebase:firebase-storage")
+    implementation("com.google.firebase:firebase-firestore-ktx:24.11.1")
 }

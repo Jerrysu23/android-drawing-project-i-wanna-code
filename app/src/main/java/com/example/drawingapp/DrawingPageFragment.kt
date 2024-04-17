@@ -1,22 +1,30 @@
 package com.example.drawingapp
 
 import android.annotation.SuppressLint
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 
 import com.example.drawingapp.databinding.FragmentDrawingPageBinding
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
+import com.google.firebase.firestore.firestore
+import com.google.firebase.storage.storage
 import vadiole.colorpicker.ColorModel
 import vadiole.colorpicker.ColorPickerDialog
+import java.io.ByteArrayOutputStream
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -59,7 +67,53 @@ class DrawingPageFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_drawing_page, container, false)
         drawingView = binding.drawingView
+        var user = Firebase.auth.currentUser
+        binding.saveButt.setOnClickListener{
 
+            if(user != null){
+                val baos = ByteArrayOutputStream()
+                viewModel.dbCurrentDrawing.compress(Bitmap.CompressFormat.PNG, 0, baos)
+                val data = baos.toByteArray()
+                val ref = Firebase.storage.reference
+                val fileRef = ref.child("${user!!.uid}/${viewModel.getFileName(viewModel.dbCurrentId)}")
+                var uploadTask = fileRef.putBytes(data)
+                uploadTask.addOnFailureListener{e -> Log.e("Pic upload", "Failed !$e")}
+                    .addOnSuccessListener { Log.e("Pic upload", "Success!") }
+                val db = Firebase.firestore
+                var drawinglist = ArrayList<String>()
+                val collection = db.collection("users").document("${user!!.uid}")
+                collection.get().addOnSuccessListener { result ->
+                    if(result.data?.get("drawings") != null){
+
+                        drawinglist = result.data?.get("drawings") as ArrayList<String>
+                        Log.e("drawinglist", drawinglist.toString())
+
+
+                    }
+                    var image = "gs://cs4530-drawing-app.appspot.com/${user!!.uid}/${viewModel.getFileName(viewModel.dbCurrentId)}"
+                    if(!drawinglist.contains(image)){
+                        drawinglist.add(image)
+                    }
+                    Log.e("drawinglist", drawinglist.toString())
+                    val document = mapOf("drawings" to drawinglist, "email" to user!!.email, "name" to user!!.displayName)
+                    db.collection("users/").document("${user!!.uid}")
+                        .set(document).addOnSuccessListener {
+                            Log.e("Upload", "Success")
+                        }.addOnFailureListener{
+                            Log.e("Upload", "Failed")
+                        }
+
+                }
+                    .addOnFailureListener{
+                        Log.e("Error", "error getting file")
+                    }
+
+            }
+            else{
+                Toast.makeText(this@DrawingPageFragment.context, "You need to be signed in to upload a drawing", Toast.LENGTH_LONG).show()
+            }
+
+        }
         // Default values for the drawing view
         drawingView.setPenColor(Color.BLACK)
         drawingView.setPenSize(5.0f)

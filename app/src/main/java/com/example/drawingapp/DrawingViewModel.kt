@@ -28,6 +28,9 @@ class DrawingViewModel(private val repository: DrawingRepository): ViewModel() {
     fun updateDrawing(bitmap: Bitmap, id: Long) {
         repository.updateDrawing(bitmap, id)
     }
+    fun getFileName(id: Long) : String{
+        return repository.getCurrentFileName(id)
+    }
 
     fun addDrawing(filename: String) : String {
         val id = repository.addDrawing(filename)
