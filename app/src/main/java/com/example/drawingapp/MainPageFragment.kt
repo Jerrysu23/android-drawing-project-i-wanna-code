@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
@@ -26,6 +27,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.text.style.TextAlign
+
 
 class MainPageFragment : Fragment() {
     private val viewModel : DrawingViewModel by activityViewModels(){
@@ -47,6 +53,32 @@ class MainPageFragment : Fragment() {
     @Composable
     fun MainPageContent() {
         Column {
+            // Login button
+            val loggedIn = viewModel.loggedIn.observeAsState()
+            Row(modifier = Modifier.fillMaxWidth()) {
+                Text(
+                    if (loggedIn.value!!) viewModel.loggedInEmail.value!! else "Not Logged In",
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .weight(1f)
+                        .wrapContentHeight(align = Alignment.CenterVertically)
+                )
+                Button(
+                    onClick = if (loggedIn.value!!) ({
+                        // TODO: Make this actually work
+                        viewModel.loggedIn.postValue(false)
+                        viewModel.loggedInEmail.postValue("")
+                        Toast.makeText(this@MainPageFragment.context, "You have been logged out.", Toast.LENGTH_LONG).show()
+                    }) else ({
+                        findNavController().navigate(R.id.goToLogin)
+                    }),
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Text(if (loggedIn.value!!) "Log Out" else "Log In")
+                }
+            }
+
+            // File name field
             var text by remember { mutableStateOf("") }
             Row(modifier = Modifier.fillMaxWidth()){
                 TextField(

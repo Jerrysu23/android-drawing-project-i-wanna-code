@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Button
@@ -42,47 +43,54 @@ class LoginPageFragment : Fragment() {
 
     @Composable
     fun LoginPageContent() {
-        // Username Field
-        var emailText by remember { mutableStateOf("") }
-        Row(modifier = Modifier.fillMaxWidth()){
-            TextField(
-                modifier = Modifier.weight(1f),
-                value = emailText,
-                onValueChange = {
-                    emailText = it
-                },
-                label = { Text("Username") }
-            )
-        }
+        Column {
+            // Username Field
+            var emailText by remember { mutableStateOf("") }
+            Row(modifier = Modifier.fillMaxWidth()) {
+                TextField(
+                    modifier = Modifier.weight(1f),
+                    value = emailText,
+                    onValueChange = {
+                        emailText = it
+                    },
+                    label = { Text("Email") }
+                )
+            }
 
-        // Password Field
-        var passwordText by remember { mutableStateOf("") }
-        Row(modifier = Modifier.fillMaxWidth()){
-            TextField(
-                modifier = Modifier.weight(1f),
-                value = passwordText,
-                onValueChange = {
-                    passwordText = it
-                },
-                label = { Text("Email") },
-                visualTransformation = PasswordVisualTransformation()
-            )
-        }
+            // Password Field
+            var passwordText by remember { mutableStateOf("") }
+            Row(modifier = Modifier.fillMaxWidth()) {
+                TextField(
+                    modifier = Modifier.weight(1f),
+                    value = passwordText,
+                    onValueChange = {
+                        passwordText = it
+                    },
+                    label = { Text("Password") },
+                    visualTransformation = PasswordVisualTransformation()
+                )
+            }
 
-        // Login Button
-        // TODO: Instead of just making it go back to the main page, make it actually start the login process
-        Button(
-            onClick = {
-                if(emailText != "" && passwordText != "") {
-                    findNavController().navigate(R.id.finishLogin)
-                }
-                else{
-                    Toast.makeText(this@LoginPageFragment.context, "Please enter a username and password", Toast.LENGTH_LONG).show()
-                }
-            },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("New Drawing")
+            // Login Button
+            // TODO: Instead of just making it go back to the main page, make it actually start the login process
+            Button(
+                onClick = {
+                    if (emailText != "" && passwordText != "") {
+                        viewModel.loggedIn.postValue(true)
+                        viewModel.loggedInEmail.postValue(emailText)
+                        findNavController().navigate(R.id.finishLogin)
+                    } else {
+                        Toast.makeText(
+                            this@LoginPageFragment.context,
+                            "Please enter a username and password",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Log In")
+            }
         }
     }
 }
