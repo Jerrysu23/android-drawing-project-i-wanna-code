@@ -57,6 +57,10 @@ class DrawingViewModel(private val repository: DrawingRepository): ViewModel() {
 
     // Select a drawing if possible
 
+    // The currently logged in user
+    val loggedIn = MutableLiveData<Boolean>(false)
+    val loggedInEmail = MutableLiveData<String>("")
+
 }
 class DrawingViewModelFactory(private val repository: DrawingRepository) : ViewModelProvider.Factory{
     override fun <T : ViewModel> create(modelClass: Class<T>) : T{
