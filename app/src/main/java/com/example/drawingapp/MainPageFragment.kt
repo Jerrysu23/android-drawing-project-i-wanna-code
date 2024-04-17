@@ -31,18 +31,23 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.style.TextAlign
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
 
 
 class MainPageFragment : Fragment() {
     private val viewModel : DrawingViewModel by activityViewModels(){
         DrawingViewModelFactory((activity?.application as DrawingApplication).drawingRepository)
     }
+    private lateinit var auth : FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        auth = Firebase.auth
         return ComposeView(requireContext()).apply {
             setContent {
                 MainPageContent()
@@ -65,7 +70,7 @@ class MainPageFragment : Fragment() {
                 )
                 Button(
                     onClick = if (loggedIn.value!!) ({
-                        // TODO: Make this actually work
+                        auth.signOut()
                         viewModel.loggedIn.postValue(false)
                         viewModel.loggedInEmail.postValue("")
                         Toast.makeText(this@MainPageFragment.context, "You have been logged out.", Toast.LENGTH_LONG).show()

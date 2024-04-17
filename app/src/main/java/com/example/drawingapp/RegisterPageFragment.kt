@@ -23,17 +23,23 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
 
 class RegisterPageFragment : Fragment() {
     private val viewModel : DrawingViewModel by activityViewModels(){
         DrawingViewModelFactory((activity?.application as DrawingApplication).drawingRepository)
     }
+    private lateinit var auth : FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        auth = Firebase.auth
+
         return ComposeView(requireContext()).apply {
             setContent {
                 LoginPageContent()
@@ -85,29 +91,43 @@ class RegisterPageFragment : Fragment() {
                 )
             }
 
-            // Login Button
-            // TODO: Instead of just making it go back to the main page, make it actually start the register process
+            // Register Button
             Button(
                 onClick = {
-                    if (emailText != "" && passwordText != "" && confirmPasswordText != "") {
-                        if (passwordText == confirmPasswordText) {
-                            viewModel.loggedIn.postValue(true)
-                            viewModel.loggedInEmail.postValue(emailText)
-                            findNavController().navigate(R.id.finishRegister)
-                        } else {
-                            Toast.makeText(
-                                this@RegisterPageFragment.context,
-                                "Passwords do not match.",
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
-                    } else {
+                    if (emailText == "" || passwordText == "" || confirmPasswordText == "") {
                         Toast.makeText(
                             this@RegisterPageFragment.context,
                             "Please enter a username and password",
                             Toast.LENGTH_LONG
                         ).show()
+                        return@Button
                     }
+
+                    if (passwordText != confirmPasswordText) {
+                        Toast.makeText(
+                            this@RegisterPageFragment.context,
+                            "Passwords do not match.",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        return@Button
+                    }
+
+                    auth.createUserWithEmailAndPassword(emailText, passwordText)
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                Log.d("RegisterPage", "Successfully created account for $emailText")
+                                viewModel.loggedIn.postValue(true)
+                                viewModel.loggedInEmail.postValue(auth.currentUser?.email)
+                                findNavController().navigate(R.id.finishRegister)
+                            } else {
+                                Log.w("RegisterPage", "Could not create account", task.exception)
+                                Toast.makeText(
+                                    this@RegisterPageFragment.context,
+                                    "Authentication failed.",
+                                    Toast.LENGTH_SHORT,
+                                ).show()
+                            }
+                        }
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {

@@ -29,17 +29,22 @@ import androidx.compose.ui.text.withStyle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
 
 class LoginPageFragment : Fragment() {
     private val viewModel : DrawingViewModel by activityViewModels(){
         DrawingViewModelFactory((activity?.application as DrawingApplication).drawingRepository)
     }
+    private lateinit var auth : FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        auth = Firebase.auth
         return ComposeView(requireContext()).apply {
             setContent {
                 LoginPageContent()
@@ -78,20 +83,33 @@ class LoginPageFragment : Fragment() {
             }
 
             // Login Button
-            // TODO: Instead of just making it go back to the main page, make it actually start the login process
             Button(
                 onClick = {
-                    if (emailText != "" && passwordText != "") {
-                        viewModel.loggedIn.postValue(true)
-                        viewModel.loggedInEmail.postValue(emailText)
-                        findNavController().navigate(R.id.finishLogin)
-                    } else {
+                    if (emailText == "" || passwordText == "") {
                         Toast.makeText(
                             this@LoginPageFragment.context,
                             "Please enter a username and password",
                             Toast.LENGTH_LONG
                         ).show()
+                        return@Button
                     }
+
+                    auth.signInWithEmailAndPassword(emailText, passwordText)
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                Log.d("LoginPage", "Signed in user $emailText.")
+                                viewModel.loggedIn.postValue(true)
+                                viewModel.loggedInEmail.postValue(auth.currentUser?.email)
+                                findNavController().navigate(R.id.finishLogin)
+                            } else {
+                                Log.w("LoginPage", "Could not sign in", task.exception)
+                                Toast.makeText(
+                                    this@LoginPageFragment.context,
+                                    "Authentication failed.",
+                                    Toast.LENGTH_SHORT,
+                                ).show()
+                            }
+                        }
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
