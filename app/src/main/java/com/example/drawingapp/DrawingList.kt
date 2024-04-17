@@ -30,7 +30,7 @@ import java.nio.file.Files
 import java.io.File
 
 @Composable
-fun DrawingList(bitmaps: List<Bitmap>, context: Context?, onItemClick: (Int) -> Unit) {
+fun DrawingList(bitmaps: List<fileAndBitmap>, context: Context?, onItemClick: (Int) -> Unit) {
     Column (
         modifier = Modifier
             .fillMaxSize()
@@ -45,13 +45,13 @@ fun DrawingList(bitmaps: List<Bitmap>, context: Context?, onItemClick: (Int) -> 
             ) {
 
                 Image(
-                    bitmap.asImageBitmap(),
-                    "Drawing ${index + 1}",
+                    bitmap.drawing.asImageBitmap(),
+                    bitmap.filename,
                     modifier = Modifier
                         .size(100.dp)
                         .border(BorderStroke(1.dp, Color.Black))
                 )
-                Text("Drawing ${index + 1}", textAlign = TextAlign.Center, modifier = Modifier
+                Text(bitmap.filename, textAlign = TextAlign.Center, modifier = Modifier
                     .weight(1f)
                     .align(Alignment.CenterVertically)
                 )

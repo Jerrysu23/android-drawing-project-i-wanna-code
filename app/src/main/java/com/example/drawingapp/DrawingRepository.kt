@@ -12,30 +12,30 @@ import java.io.File
 import java.io.FileOutputStream
 
 class DrawingRepository(private val scope : CoroutineScope, private val dao: DrawingDAO, private val context: Context) {
-    fun allDrawings() : Flow<List<Bitmap>> {
+    fun allDrawings() : Flow<List<fileAndBitmap>> {
 
-       var bitmaps: Flow<List<Bitmap>> = dao.allDrawings().map {
-           var bitmapList : ArrayList<Bitmap> = ArrayList()
+       var bitmaps: Flow<List<fileAndBitmap>> = dao.allDrawings().map {
+           var bitmapList : ArrayList<fileAndBitmap> = ArrayList()
            for(x in it){
-               var bitmap = BitmapFactory.decodeFile(context?.filesDir.toString() + "/" + (x-1) + ".png")
+               var bitmap = BitmapFactory.decodeFile(context?.filesDir.toString() + "/" + x + ".png")
                Log.i("drawing", "$bitmap")
-               bitmapList.add(bitmap)
+               bitmapList.add(fileAndBitmap(x, bitmap))
            }
            return@map bitmapList.toList()
 
        }
         return bitmaps
     }
-    fun addDrawing() : Long = runBlocking {
 
-            val id = dao.addDrawing(Drawing())
-            Log.i("addDrawing", "$id path: ${context.filesDir.toString() + "/" + (id-1) + ".png"}")
-            val dir = File(context.filesDir.toString() + "/" + (id-1) + ".png")
-            val fOut = FileOutputStream(dir)
-            val bmp = Bitmap.createBitmap(800, 800, Bitmap.Config.ARGB_8888)
-            bmp.compress(Bitmap.CompressFormat.PNG, 85, fOut)
-            fOut.flush()
-            fOut.close()
+    fun addDrawing(filename: String) : Long = runBlocking {
+
+        val id = dao.addDrawing(Drawing(filename))
+        val dir = File(context.filesDir.toString() + "/" + filename + ".png")
+        val fOut = FileOutputStream(dir)
+        val bmp = Bitmap.createBitmap(800, 800, Bitmap.Config.ARGB_8888)
+        bmp.compress(Bitmap.CompressFormat.PNG, 85, fOut)
+        fOut.flush()
+        fOut.close()
         id-1
 
 
@@ -43,7 +43,7 @@ class DrawingRepository(private val scope : CoroutineScope, private val dao: Dra
     }
     fun updateDrawing(bitmap: Bitmap, id: Long){
     scope.launch {
-        val dir = File(context.filesDir.toString() + "/" + dao.getCurrentDrawing(id) + ".png")
+        val dir = File(context.filesDir.toString() + "/" + dao.getCurrentDrawing(id+1) + ".png")
         val fOut = FileOutputStream(dir)
         bitmap.compress(Bitmap.CompressFormat.PNG, 85, fOut)
         fOut.flush()
@@ -51,8 +51,8 @@ class DrawingRepository(private val scope : CoroutineScope, private val dao: Dra
     }
 
     }
-     fun getCurrentDrawing(Id: Long): Bitmap = runBlocking{
-        Log.i("getDrawing", "${dao.getCurrentDrawing(Id)} ")
-         BitmapFactory.decodeFile(context?.filesDir.toString() + "/" + dao.getCurrentDrawing(Id) + ".png").copy(Bitmap.Config.ARGB_8888, true)
+     fun getCurrentDrawing(id: Long): Bitmap = runBlocking{
+         Log.i("filename:", "filename is " + dao.getCurrentDrawing(id))
+         BitmapFactory.decodeFile(context?.filesDir.toString() + "/" + dao.getCurrentDrawing(id+1) + ".png").copy(Bitmap.Config.ARGB_8888, true)
     }
 }

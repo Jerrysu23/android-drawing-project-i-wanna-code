@@ -15,7 +15,7 @@ class DrawingViewModel(private val repository: DrawingRepository): ViewModel() {
     var dbCurrentId: Long = 0
     var dbCurrentDrawing: Bitmap = Bitmap.createBitmap(800, 800, Bitmap.Config.ARGB_8888)
 
-    fun getDrawingById(id: Long) : Bitmap {
+    fun getDrawingById(id : Long) : Bitmap {
         dbCurrentDrawing = repository.getCurrentDrawing(id)
         dbCurrentId = id
         return dbCurrentDrawing
@@ -25,17 +25,15 @@ class DrawingViewModel(private val repository: DrawingRepository): ViewModel() {
         return dbCurrentDrawing
     }
 
-    fun updateDrawing(bitmap: Bitmap, Id: Long) {
-        repository.updateDrawing(bitmap, Id)
+    fun updateDrawing(bitmap: Bitmap, id: Long) {
+        repository.updateDrawing(bitmap, id)
     }
 
-    fun addDrawing() : Long {
-        val id = repository.addDrawing()
+    fun addDrawing(filename: String) : String {
+        val id = repository.addDrawing(filename)
         dbCurrentDrawing = repository.getCurrentDrawing(id)
         dbCurrentId = id
-
-        Log.i("drawing id", "Drawing id is: $dbCurrentDrawing")
-        return id
+        return filename
     }
 
 

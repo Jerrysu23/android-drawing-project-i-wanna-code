@@ -1,10 +1,13 @@
 package com.example.drawingapp
 
+import android.app.Activity
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -58,8 +61,14 @@ class MainPageFragment : Fragment() {
 
             Button(
                 onClick = {
-                        viewModel.addDrawing()
+                    if(text != "") {
+                        Log.i("filename:", text)
+                        viewModel.addDrawing(text)
                         findNavController().navigate(R.id.makeNewDrawing)
+                    }
+                    else{
+                        Toast.makeText(this@MainPageFragment.context, "Please enter a file name", Toast.LENGTH_LONG).show()
+                    }
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {

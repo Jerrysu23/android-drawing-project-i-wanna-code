@@ -38,10 +38,10 @@ interface DrawingDAO{
     @Insert
     suspend fun addDrawing(data : Drawing) : Long
 
-    @Query("SELECT id from drawing")
-    fun allDrawings() : Flow<List<Long>>
+    @Query("SELECT filename from drawing")
+    fun allDrawings() : Flow<List<String>>
 
-    @Query("SELECT id from drawing where id = :id")
-    suspend fun getCurrentDrawing(id: Long) : Long
+    @Query("SELECT filename from drawing where id = :id")
+    suspend fun getCurrentDrawing(id: Long) : String
 
 }

@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
 import android.util.Base64.DEFAULT
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
@@ -13,6 +14,12 @@ import java.nio.ByteBuffer
 
 
 @Entity(tableName = "drawing")
-data class Drawing( @PrimaryKey(autoGenerate = true) var id: Int = 0) {
+data class Drawing(var filename: String,  @PrimaryKey(autoGenerate = true) var id: Int = 0) {
+
+}
+
+data class fileAndBitmap(var filename: String, var bitmap: Bitmap){
+    var name = filename
+    var drawing = bitmap
 
 }
