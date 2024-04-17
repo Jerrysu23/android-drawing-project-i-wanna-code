@@ -9,9 +9,7 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
@@ -21,16 +19,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.withStyle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 
-class LoginPageFragment : Fragment() {
+class RegisterPageFragment : Fragment() {
     private val viewModel : DrawingViewModel by activityViewModels(){
         DrawingViewModelFactory((activity?.application as DrawingApplication).drawingRepository)
     }
@@ -77,17 +71,39 @@ class LoginPageFragment : Fragment() {
                 )
             }
 
+            // Confirm Password Field
+            var confirmPasswordText by remember { mutableStateOf("") }
+            Row(modifier = Modifier.fillMaxWidth()) {
+                TextField(
+                    modifier = Modifier.weight(1f),
+                    value = confirmPasswordText,
+                    onValueChange = {
+                        confirmPasswordText = it
+                    },
+                    label = { Text("Confirm Password") },
+                    visualTransformation = PasswordVisualTransformation()
+                )
+            }
+
             // Login Button
-            // TODO: Instead of just making it go back to the main page, make it actually start the login process
+            // TODO: Instead of just making it go back to the main page, make it actually start the register process
             Button(
                 onClick = {
-                    if (emailText != "" && passwordText != "") {
-                        viewModel.loggedIn.postValue(true)
-                        viewModel.loggedInEmail.postValue(emailText)
-                        findNavController().navigate(R.id.finishLogin)
+                    if (emailText != "" && passwordText != "" && confirmPasswordText != "") {
+                        if (passwordText == confirmPasswordText) {
+                            viewModel.loggedIn.postValue(true)
+                            viewModel.loggedInEmail.postValue(emailText)
+                            findNavController().navigate(R.id.finishRegister)
+                        } else {
+                            Toast.makeText(
+                                this@RegisterPageFragment.context,
+                                "Passwords do not match.",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
                     } else {
                         Toast.makeText(
-                            this@LoginPageFragment.context,
+                            this@RegisterPageFragment.context,
                             "Please enter a username and password",
                             Toast.LENGTH_LONG
                         ).show()
@@ -95,21 +111,8 @@ class LoginPageFragment : Fragment() {
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Log In")
+                Text("Create Account")
             }
-
-            // Register Button
-            // from https://stackoverflow.com/questions/65567412/jetpack-compose-text-hyperlink-some-section-of-the-text
-            val registerString: AnnotatedString = buildAnnotatedString {
-                pushStringAnnotation(tag = "register", annotation = "Register Page")
-                withStyle(style = SpanStyle(color = MaterialTheme.colors.primary)) {
-                    append("Create Account")
-                }
-                pop()
-            }
-            ClickableText(text = registerString, onClick = {
-                findNavController().navigate(R.id.goToRegister)
-            })
         }
     }
 }
