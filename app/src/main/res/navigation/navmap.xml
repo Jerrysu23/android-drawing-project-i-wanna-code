@@ -13,6 +13,9 @@
         <action
             android:id="@+id/makeNewDrawing"
             app:destination="@id/drawingPageFragment" />
+        <action
+            android:id="@+id/goToLogin"
+            app:destination="@id/loginPageFragment" />
     </fragment>
     <fragment
         android:id="@+id/drawingPageFragment"
@@ -21,6 +24,27 @@
         >
         <action
             android:id="@+id/toStartScreen"
+            app:destination="@id/mainPageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginPageFragment"
+        android:name="com.example.drawingapp.LoginPageFragment"
+        android:label="LoginPageFragment"
+        >
+        <action
+            android:id="@+id/goToRegister"
+            app:destination="@id/registerPageFragment" />
+        <action
+            android:id="@+id/finishLogin"
+            app:destination="@id/mainPageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerPageFragment"
+        android:name="com.example.drawingapp.RegisterPageFragment"
+        android:label="RegisterPageFragment"
+        >
+        <action
+            android:id="@+id/finishRegister"
             app:destination="@id/mainPageFragment" />
     </fragment>
 </navigation>
