@@ -33,6 +33,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
 import com.google.firebase.firestore.firestore
 import com.google.firebase.storage.storage
 import kotlinx.coroutines.Dispatchers
@@ -43,10 +45,12 @@ data class UserInfo (val email: String, val drawingUrls: List<String>)
 
 @Composable
 fun GalleryList(context: Context?) {
+    val auth = Firebase.auth
+
     val loading: MutableState<Boolean> = remember { mutableStateOf(true) }
     val bitmaps: SnapshotStateList<FileAndBitmap> = remember { mutableStateListOf() }
 
-    if (loading.value) {
+    if (auth.currentUser != null && loading.value) {
         // Asynchronously get all of the users from the database
         LaunchedEffect(true) {
             val users: List<UserInfo> = fetchUsersFromDatabase(context!!)
@@ -63,7 +67,14 @@ fun GalleryList(context: Context?) {
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        if (loading.value) {
+        if (auth.currentUser == null) {
+            Text(
+                "You must be logged in to view the gallery.",
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .padding(Dp(20f))
+            )
+        } else if (loading.value) {
             CircularProgressIndicator(
                 modifier = Modifier
                     .width(64.dp)

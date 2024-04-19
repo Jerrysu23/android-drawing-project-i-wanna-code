@@ -88,7 +88,11 @@ class MainPageFragment : Fragment() {
             // View Gallery button
             Button(
                 onClick = {
-                    findNavController().navigate(R.id.goToGallery)
+                    if (auth.currentUser != null) {
+                        findNavController().navigate(R.id.goToGallery)
+                    } else {
+                        Toast.makeText(this@MainPageFragment.context, "You must be logged in.", Toast.LENGTH_LONG).show()
+                    }
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
