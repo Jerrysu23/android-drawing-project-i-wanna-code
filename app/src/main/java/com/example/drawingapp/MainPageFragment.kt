@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.Button
 import androidx.compose.material.Text
@@ -31,6 +32,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
@@ -66,7 +68,7 @@ class MainPageFragment : Fragment() {
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .weight(1f)
-                        .wrapContentHeight(align = Alignment.CenterVertically)
+                        .padding(Dp(15f))
                 )
                 Button(
                     onClick = if (loggedIn.value!!) ({
@@ -81,6 +83,16 @@ class MainPageFragment : Fragment() {
                 ) {
                     Text(if (loggedIn.value!!) "Log Out" else "Log In")
                 }
+            }
+
+            // View Gallery button
+            Button(
+                onClick = {
+                    findNavController().navigate(R.id.goToGallery)
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("View Public Gallery")
             }
 
             // File name field
