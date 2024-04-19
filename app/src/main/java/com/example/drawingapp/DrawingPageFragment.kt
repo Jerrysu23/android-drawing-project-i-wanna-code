@@ -71,6 +71,7 @@ class DrawingPageFragment : Fragment() {
         binding.saveButt.setOnClickListener{
 
             if(user != null){
+                Toast.makeText(this@DrawingPageFragment.context, "Uploading drawing to gallery", Toast.LENGTH_LONG).show()
                 val baos = ByteArrayOutputStream()
                 viewModel.dbCurrentDrawing.compress(Bitmap.CompressFormat.PNG, 0, baos)
                 val data = baos.toByteArray()
