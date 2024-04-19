@@ -18,8 +18,8 @@ data class Drawing(var filename: String,  @PrimaryKey(autoGenerate = true) var i
 
 }
 
-data class fileAndBitmap(var filename: String, var bitmap: Bitmap){
+data class fileAndBitmap(var filename: String, var bitmap: Bitmap, var owner: String = ""){
     var name = filename
     var drawing = bitmap
-
+    var creator = owner
 }
