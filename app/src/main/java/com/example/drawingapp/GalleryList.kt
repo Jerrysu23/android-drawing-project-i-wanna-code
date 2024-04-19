@@ -7,7 +7,6 @@ import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,7 +17,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -26,7 +24,6 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -47,13 +44,13 @@ data class UserInfo (val email: String, val drawingUrls: List<String>)
 @Composable
 fun GalleryList(context: Context?) {
     val loading: MutableState<Boolean> = remember { mutableStateOf(true) }
-    val bitmaps: SnapshotStateList<fileAndBitmap> = remember { mutableStateListOf() }
+    val bitmaps: SnapshotStateList<FileAndBitmap> = remember { mutableStateListOf() }
 
     if (loading.value) {
         // Asynchronously get all of the users from the database
         LaunchedEffect(true) {
             val users: List<UserInfo> = fetchUsersFromDatabase(context!!)
-            val drawings: List<fileAndBitmap> = fetchDrawings(users, context)
+            val drawings: List<FileAndBitmap> = fetchDrawings(users, context)
 
             bitmaps.addAll(drawings)
             loading.value = false
@@ -127,8 +124,8 @@ suspend fun fetchUsersFromDatabase(toastContext: Context): List<UserInfo> = with
     userInfos
 }
 
-suspend fun fetchDrawings(users: List<UserInfo>, toastContext: Context): List<fileAndBitmap> = withContext(Dispatchers.IO) {
-    val drawings: MutableList<fileAndBitmap> = mutableListOf()
+suspend fun fetchDrawings(users: List<UserInfo>, toastContext: Context): List<FileAndBitmap> = withContext(Dispatchers.IO) {
+    val drawings: MutableList<FileAndBitmap> = mutableListOf()
     try {
         users.forEach { user ->
             user.drawingUrls.forEach { url ->
@@ -136,7 +133,7 @@ suspend fun fetchDrawings(users: List<UserInfo>, toastContext: Context): List<fi
                 val bytes = storageRef.getBytes(Long.MAX_VALUE).await()
                 val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
                 val filename = url.split('/').last().split('.').first()
-                drawings.add(fileAndBitmap(filename = filename, bitmap = bitmap, owner = user.email))
+                drawings.add(FileAndBitmap(filename = filename, bitmap = bitmap, owner = user.email))
             }
         }
     } catch (e: Exception) {

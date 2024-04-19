@@ -12,14 +12,14 @@ import java.io.File
 import java.io.FileOutputStream
 
 class DrawingRepository(private val scope : CoroutineScope, private val dao: DrawingDAO, private val context: Context) {
-    fun allDrawings() : Flow<List<fileAndBitmap>> {
+    fun allDrawings() : Flow<List<FileAndBitmap>> {
 
-       var bitmaps: Flow<List<fileAndBitmap>> = dao.allDrawings().map {
-           var bitmapList : ArrayList<fileAndBitmap> = ArrayList()
+       var bitmaps: Flow<List<FileAndBitmap>> = dao.allDrawings().map {
+           var bitmapList : ArrayList<FileAndBitmap> = ArrayList()
            for(x in it){
                var bitmap = BitmapFactory.decodeFile(context?.filesDir.toString() + "/" + x + ".png")
                Log.i("drawing", "$bitmap")
-               bitmapList.add(fileAndBitmap(x, bitmap))
+               bitmapList.add(FileAndBitmap(x, bitmap))
            }
            return@map bitmapList.toList()
 
