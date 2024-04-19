@@ -16,6 +16,9 @@
         <action
             android:id="@+id/goToLogin"
             app:destination="@id/loginPageFragment" />
+        <action
+            android:id="@+id/goToGallery"
+            app:destination="@id/galleryPageFragment" />
     </fragment>
     <fragment
         android:id="@+id/drawingPageFragment"
@@ -45,6 +48,15 @@
         >
         <action
             android:id="@+id/finishRegister"
+            app:destination="@id/mainPageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/galleryPageFragment"
+        android:name="com.example.drawingapp.GalleryPageFragment"
+        android:label="GalleryPageFragment"
+        >
+        <action
+            android:id="@+id/closeGallery"
             app:destination="@id/mainPageFragment" />
     </fragment>
 </navigation>
