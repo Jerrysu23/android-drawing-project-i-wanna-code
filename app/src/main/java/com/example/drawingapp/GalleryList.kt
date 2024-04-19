@@ -98,17 +98,17 @@ fun GalleryList(context: Context?) {
                     )
 
                     Column(
-                        Modifier.weight(1f)
+                        Modifier.weight(1f).padding(vertical = Dp(20f))
                     ) {
                         Text(
                             bitmap.filename,
                             textAlign = TextAlign.Center,
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier.fillMaxWidth()
                         )
                         Text(
                             "Created by ${bitmap.creator}",
                             textAlign = TextAlign.Center,
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier.fillMaxWidth()
                         )
                     }
                 }
