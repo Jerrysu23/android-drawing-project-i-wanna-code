@@ -20,8 +20,22 @@
 #include <jni.h>
 #include <android/bitmap.h>
 
+#include <time.h>
+#include <android/log.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
 
-static int rgb_clamp(int i);
+
+static int rgb_clamp(int value) {
+    if(value > 255) {
+        return 255;
+    }
+    if(value < 0) {
+        return 0;
+    }
+    return value;
+}
 
 static void invertColors(AndroidBitmapInfo* info, void* pixels) {
     int xx, yy, red, green, blue;
@@ -50,6 +64,7 @@ static void invertColors(AndroidBitmapInfo* info, void* pixels) {
         pixels = (char*)pixels + info->stride;
     }
 }
+
 
 static void blur(AndroidBitmapInfo* info, void* pixels) {
     int xx, yy, red, green, blue;
@@ -119,13 +134,5 @@ static void blur(AndroidBitmapInfo* info, void* pixels) {
 
 
 
-static int rgb_clamp(int value) {
-    if (value > 255) {
-        return 255;
-    }
-    if (value < 0) {
-        return 0;
-    }
-    return value;
-}
+
 
