@@ -47,6 +47,9 @@ class GalleryPageFragment : Fragment() {
             ) {
                 Text("Back to Home")
             }
+
+            // List
+            GalleryList(context)
         }
     }
 }

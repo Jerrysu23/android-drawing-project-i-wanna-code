@@ -93,5 +93,6 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.8.0")) // Firebase
     implementation("com.google.firebase:firebase-analytics") // for Firebase packages. we'll probably need more
     implementation("com.google.firebase:firebase-storage")
+    implementation("com.google.firebase:firebase-firestore:24.11.1")
     implementation("com.google.firebase:firebase-firestore-ktx:24.11.1")
 }
