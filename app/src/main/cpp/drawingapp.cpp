@@ -58,7 +58,7 @@ static void invertColors(AndroidBitmapInfo* info, void* pixels) {
             line[xx] =
                     ((red << 16) & 0x00FF0000) |
                     ((green << 8) & 0x0000FF00) |
-                    (blue & 0x000000FF);
+                    (blue & 0x000000FF) | 0xFF000000;
         }
 
         pixels = (char*)pixels + info->stride;
@@ -90,7 +90,9 @@ static void blur(AndroidBitmapInfo* info, void* pixels) {
             green = (int)((line[xx] & 0x0000FF00) >> 8);
             blue = (int)(line[xx] & 0x000000FF);
 
-            blurredRed = blurredGreen = blurredBlue = 0;
+            blurredRed = red;
+            blurredGreen =  green;
+            blurredBlue =  blue;
 
             for (int i = -kernelHalf; i <= kernelHalf; i++) {
                 prevPixelIndex = rgb_clamp(xx + i);
@@ -124,15 +126,40 @@ static void blur(AndroidBitmapInfo* info, void* pixels) {
             line[xx] =
                     ((blurredRed << 16) & 0x00FF0000) |
                     ((blurredGreen << 8) & 0x0000FF00) |
-                    (blurredBlue & 0x000000FF);
+                    (blurredBlue & 0x000000FF) | 0xFF000000;
         }
 
         pixels = (char*)pixels + info->stride;
     }
 
+
 }
 
 
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_example_drawingapp_Wrappers_blur(JNIEnv *env, jobject thiz, jobject bitmap) {
+    // TODO: implement blur()
+    AndroidBitmapInfo info;
+    void* pixels;
+    AndroidBitmap_getInfo(env, bitmap, &info);
+    AndroidBitmap_lockPixels(env, bitmap, &pixels);
+    blur(&info, pixels);
+    AndroidBitmap_unlockPixels(env, bitmap);
+}
 
+extern "C" JNIEXPORT void JNICALL Java_com_example_drawingapp_Wrappers_invertColors(JNIEnv* env, jobject obj, jobject bitmap) {
+    AndroidBitmapInfo info;
+    void* pixels;
 
+    // Get bitmap information and pixels
+    AndroidBitmap_getInfo(env, bitmap, &info);
+    AndroidBitmap_lockPixels(env, bitmap, &pixels);
+
+    // Call the native function
+    invertColors(&info, pixels);
+
+    // Release bitmap pixels
+    AndroidBitmap_unlockPixels(env, bitmap);
+}
 

@@ -31,6 +31,7 @@ class DrawingView(context: Context, attrs: AttributeSet) : View(context, attrs) 
 
         // Set up the paint
         paint.style = Paint.Style.STROKE
+        paint.color = Color.BLACK
     }
 
     fun startTouch(x: Float, y: Float) {

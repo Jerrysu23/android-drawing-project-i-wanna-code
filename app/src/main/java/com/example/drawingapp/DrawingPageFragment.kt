@@ -16,7 +16,6 @@ import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-
 import com.example.drawingapp.databinding.FragmentDrawingPageBinding
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
@@ -25,6 +24,11 @@ import com.google.firebase.storage.storage
 import vadiole.colorpicker.ColorModel
 import vadiole.colorpicker.ColorPickerDialog
 import java.io.ByteArrayOutputStream
+
+class Wrappers {
+    external fun blur(bitmap : Bitmap)
+    external fun invertColors(bitmap: Bitmap)
+}
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -68,6 +72,16 @@ class DrawingPageFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_drawing_page, container, false)
         drawingView = binding.drawingView
         var user = Firebase.auth.currentUser
+        val wrapper = Wrappers()
+
+        binding.blurButt.setOnClickListener{
+            wrapper.blur(viewModel.dbCurrentDrawing)
+            resetBitmap()
+        }
+        binding.invertButt.setOnClickListener{
+            wrapper.invertColors(viewModel.dbCurrentDrawing)
+            resetBitmap()
+        }
         binding.saveButt.setOnClickListener{
 
             if(user != null){
@@ -214,6 +228,9 @@ class DrawingPageFragment : Fragment() {
     }
 
     companion object {
+        init{
+            System.loadLibrary("drawingapp")
+        }
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
