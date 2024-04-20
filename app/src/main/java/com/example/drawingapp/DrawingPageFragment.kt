@@ -76,10 +76,12 @@ class DrawingPageFragment : Fragment() {
 
         binding.blurButt.setOnClickListener{
             wrapper.blur(viewModel.dbCurrentDrawing)
+            drawingView.stopTouch()
             resetBitmap()
         }
         binding.invertButt.setOnClickListener{
             wrapper.invertColors(viewModel.dbCurrentDrawing)
+            drawingView.stopTouch()
             resetBitmap()
         }
         binding.saveButt.setOnClickListener{
